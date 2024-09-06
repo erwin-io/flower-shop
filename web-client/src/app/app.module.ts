@@ -7,11 +7,11 @@ import { RouterModule, Routes }   from '@angular/router';
 import { AppComponent } from './app.component'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
 import { CustomHttpInterceptor } from './interceptors/custom-http.interceptors';
 import { Observable, interval } from 'rxjs';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
