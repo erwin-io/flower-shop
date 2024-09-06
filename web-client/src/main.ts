@@ -5,7 +5,5 @@ import { register } from 'swiper/element/bundle';
 
 register();
 
-
-
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
