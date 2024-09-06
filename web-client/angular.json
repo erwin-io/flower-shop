@@ -21,28 +21,46 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/vendor/bootstrap.min.css",
+              "src/assets/css/vendor/font.awesome.min.css",
+              "src/assets/css/vendor/linearicons.min.css",
+              "node_modules/swiper/swiper-bundle.min.css",
+              "src/assets/css/plugins/animate.min.css",
+              "src/assets/css/plugins/jquery-ui.min.css",
+              "src/assets/css/plugins/nice-select.min.css",
+              "src/assets/css/plugins/magnific-popup.css",
+              "src/assets/css/style.css",
+              "src/assets/css/style.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/vendor/jquery-3.6.0.min.js",
+              "src/assets/js/vendor/jquery-migrate-3.3.2.min.js",
+              "src/assets/js/plugins/jquery-ui.min.js",
+              "src/assets/js/plugins/jquery.magnific-popup.min.js",
+              "src/assets/js/popper.min.js",
+              "node_modules/swiper/swiper-bundle.min.js",
+              "src/assets/js/plugins/nice-select.min.js",
+              "src/assets/js/plugins/jquery.ajaxchimp.min.js",
+              "src/assets/js/bootstrap.bundle.min.js",
+              "src/assets/js/main.js"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "outputHashing": "all"
@@ -68,7 +86,10 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "web-client:build"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -79,10 +100,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
