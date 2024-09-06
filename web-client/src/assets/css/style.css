@@ -5541,6 +5541,12 @@ mark {
 /*----------------------------------------*/
 /*    Slider Scss
 /*----------------------------------------*/
+.intro11-slider-wrap  {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 @media (max-width: 991px) {
   .intro11-slider-wrap .swiper-button-prev, .intro11-slider-wrap .swiper-button-next {
     display: none;
