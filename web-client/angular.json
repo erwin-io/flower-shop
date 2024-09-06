@@ -5,7 +5,11 @@
   "projects": {
     "web-client": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,7 +29,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
+              "src/styles.scss",
               "src/assets/css/vendor/bootstrap.min.css",
               "src/assets/css/vendor/font.awesome.min.css",
               "src/assets/css/vendor/linearicons.min.css",
