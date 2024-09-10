@@ -26,6 +26,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly removeNodeErrorCount?: number;
         readonly restoreNodeTimeout?: number;
         readonly selector?: "RR" | "RANDOM" | "ORDER";
+        readonly defaultMode?: import("typeorm").ReplicationMode;
     };
     entities?: import("typeorm").MixedList<string | Function | import("typeorm").EntitySchema<any>>;
     subscribers?: import("typeorm").MixedList<string | Function>;
@@ -35,7 +36,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     poolSize?: number;
     synchronize?: boolean;
@@ -55,6 +56,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -73,13 +75,13 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     replication?: {
         readonly master: import("typeorm/driver/postgres/PostgresConnectionCredentialsOptions").PostgresConnectionCredentialsOptions;
         readonly slaves: import("typeorm/driver/postgres/PostgresConnectionCredentialsOptions").PostgresConnectionCredentialsOptions[];
+        readonly defaultMode?: import("typeorm").ReplicationMode;
     };
     connectTimeoutMS?: number;
     uuidExtension?: "pgcrypto" | "uuid-ossp";
     poolErrorHandler?: (err: any) => any;
     logNotifications?: boolean;
     installExtensions?: boolean;
-    applicationName?: string;
     parseInt8?: boolean;
     entities?: import("typeorm").MixedList<string | Function | import("typeorm").EntitySchema<any>>;
     subscribers?: import("typeorm").MixedList<string | Function>;
@@ -89,7 +91,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     poolSize?: number;
     synchronize?: boolean;
@@ -109,6 +111,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -116,6 +119,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     password?: string | (() => string) | (() => Promise<string>);
     database?: string;
     ssl?: boolean | import("tls").TlsOptions;
+    applicationName?: string;
 } | {
     name: string;
     type: "cockroachdb";
@@ -126,6 +130,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     replication?: {
         readonly master: import("typeorm/driver/cockroachdb/CockroachConnectionCredentialsOptions").CockroachConnectionCredentialsOptions;
         readonly slaves: import("typeorm/driver/cockroachdb/CockroachConnectionCredentialsOptions").CockroachConnectionCredentialsOptions[];
+        readonly defaultMode?: import("typeorm").ReplicationMode;
     };
     applicationName?: string;
     poolErrorHandler?: (err: any) => any;
@@ -138,7 +143,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     poolSize?: number;
     synchronize?: boolean;
@@ -158,6 +163,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -184,7 +190,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -203,6 +209,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "mssql";
@@ -215,7 +222,6 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly max?: number;
         readonly min?: number;
         readonly maxWaitingClients?: number;
-        readonly testOnBorrow?: boolean;
         readonly acquireTimeoutMillis?: number;
         readonly fifo?: boolean;
         readonly priorityRange?: number;
@@ -238,6 +244,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly useColumnNames?: boolean;
         readonly camelCaseColumns?: boolean;
         readonly disableOutputReturning?: boolean;
+        readonly disableAsciiToUnicodeParamConversion?: boolean;
         readonly debug?: {
             readonly packet?: boolean;
             readonly data?: boolean;
@@ -259,6 +266,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     replication?: {
         readonly master: import("typeorm/driver/sqlserver/SqlServerConnectionCredentialsOptions").SqlServerConnectionCredentialsOptions;
         readonly slaves: import("typeorm/driver/sqlserver/SqlServerConnectionCredentialsOptions").SqlServerConnectionCredentialsOptions[];
+        readonly defaultMode?: import("typeorm").ReplicationMode;
     };
     poolSize?: never;
     entities?: import("typeorm").MixedList<string | Function | import("typeorm").EntitySchema<any>>;
@@ -269,7 +277,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -288,6 +296,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -320,7 +329,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -339,6 +348,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     host?: string;
     port?: number;
     username?: string;
@@ -354,6 +364,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     type: "oracle";
     schema?: string;
     driver?: any;
+    thickMode?: boolean | import("typeorm/driver/oracle/OracleConnectionOptions").OracleThickModeOptions;
     useUTC?: boolean;
     replication?: {
         readonly master: import("typeorm/driver/oracle/OracleConnectionCredentialsOptions").OracleConnectionCredentialsOptions;
@@ -367,7 +378,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     poolSize?: number;
     synchronize?: boolean;
@@ -387,6 +398,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -411,7 +423,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -430,6 +442,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "nativescript";
@@ -450,7 +463,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -469,6 +482,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "react-native";
@@ -484,7 +498,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -503,6 +517,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "sqljs";
@@ -522,7 +537,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -541,6 +556,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "mongodb";
@@ -616,7 +632,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     poolSize?: number;
     synchronize?: boolean;
@@ -636,6 +652,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "aurora-mysql";
@@ -661,7 +678,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -680,6 +697,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     url?: string;
     host?: string;
     port?: number;
@@ -713,7 +731,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -732,6 +750,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "expo";
@@ -746,7 +765,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -765,6 +784,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "better-sqlite3";
@@ -788,7 +808,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -807,6 +827,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "capacitor";
@@ -824,7 +845,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -843,6 +864,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
 } | {
     name: string;
     type: "spanner";
@@ -869,6 +891,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly removeNodeErrorCount?: number;
         readonly restoreNodeTimeout?: number;
         readonly selector?: "RR" | "RANDOM" | "ORDER";
+        readonly defaultMode?: import("typeorm").ReplicationMode;
     };
     poolSize?: never;
     entities?: import("typeorm").MixedList<string | Function | import("typeorm").EntitySchema<any>>;
@@ -879,7 +902,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
     metadataTableName?: string;
     namingStrategy?: import("typeorm").NamingStrategyInterface;
     logging?: import("typeorm").LoggerOptions;
-    logger?: "debug" | "advanced-console" | "simple-console" | "file" | import("typeorm").Logger;
+    logger?: "file" | "debug" | "advanced-console" | "simple-console" | import("typeorm").Logger;
     maxQueryExecutionTime?: number;
     synchronize?: boolean;
     migrationsRun?: boolean;
@@ -898,6 +921,7 @@ export declare const getDbConnectionOptions: (connectionName?: string) => Promis
         readonly duration?: number;
         readonly ignoreErrors?: boolean;
     };
+    isolateWhereStatements?: boolean;
     instanceId?: string;
     projectId?: string;
     databaseId?: string;

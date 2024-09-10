@@ -56,8 +56,8 @@ async function bootstrap() {
     const config = app.get(config_1.ConfigService);
     const port = config.get("PORT");
     const options = new swagger_1.DocumentBuilder()
-        .setTitle("flower-shop-api")
-        .setDescription("A documentation for flower-shop-api")
+        .setTitle("shaj-flower-shop-api")
+        .setDescription("A documentation for shaj-flower-shop-api")
         .setVersion("1.0")
         .addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT", in: "header" }, "jwt")
         .build();
