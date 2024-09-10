@@ -8,7 +8,7 @@
                     <h3 class="title-slider text-uppercase">Top Trend</h3>
                     <h2 class="title">2024 Flower Trend</h2>
                     <p class="desc-content">Discover the latest blooms of 2024! From vibrant arrangements to modern styles, stay ahead of the trends with our fresh and beautiful floral creations.</p>
-                    <a class="btn flosun-button secondary-btn theme-color  rounded-0">Shop Now</a>
+                    <a class="btn flosun-button secondary-btn theme-color rounded-0" routerLink="/search">Shop Now</a>
                 </div>
                 <!-- Intro Content End -->
             </div>
@@ -18,7 +18,7 @@
                     <h3 class="title-slider black-slider-title text-uppercase">Collection</h3>
                     <h2 class="title">Flowers and Candle <br> Birthday Gift</h2>
                     <p class="desc-content">Celebrate birthdays in style with our thoughtful Flower and Candle gift set. The perfect blend of elegance and warmth, designed to make any birthday extra special! </p>
-                    <a class="btn flosun-button secondary-btn rounded-0">Shop Now</a>
+                    <a class="btn flosun-button secondary-btn rounded-0" routerLink="/search">Shop Now</a>
                 </div>
                 <!-- Intro Content End -->
             </div>
@@ -37,7 +37,7 @@
         <div class="row">
             <div class="cat-1 col-md-4 col-sm-12 col-custom">
                 <div class="categories-img mb-30">
-                    <a><img src="assets/images/category/home1-category-1.jpg" alt=""></a>
+                    <a routerLink="/search"><img src="assets/images/category/home1-category-1.jpg" alt=""></a>
                     <div class="categories-content">
                         <h3>Potted Plant</h3>
                         <h4>18 items</h4>
@@ -48,7 +48,7 @@
                 <div class="row">
                     <div class="cat-3 col-md-7 col-custom">
                         <div class="categories-img mb-30">
-                            <a><img src="assets/images/category/home1-category-2.jpg" alt=""></a>
+                            <a routerLink="/search"><img src="assets/images/category/home1-category-2.jpg" alt=""></a>
                             <div class="categories-content">
                                 <h3>Potted Plant</h3>
                                 <h4>18 items</h4>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="cat-4 col-md-5 col-custom">
                         <div class="categories-img mb-30">
-                            <a><img src="assets/images/category/home1-category-3.jpg" alt=""></a>
+                            <a routerLink="/search"><img src="assets/images/category/home1-category-3.jpg" alt=""></a>
                             <div class="categories-content">
                                 <h3>Potted Plant</h3>
                                 <h4>18 items</h4>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="cat-5 col-md-4 col-custom">
                         <div class="categories-img mb-30">
-                            <a><img src="assets/images/category/home1-category-4.jpg" alt=""></a>
+                            <a routerLink="/search"><img src="assets/images/category/home1-category-4.jpg" alt=""></a>
                             <div class="categories-content">
                                 <h3>Potted Plant</h3>
                                 <h4>18 items</h4>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="cat-6 col-md-8 col-custom">
                         <div class="categories-img mb-30">
-                            <a><img src="assets/images/category/home1-category-5.jpg" alt=""></a>
+                            <a routerLink="/search"><img src="assets/images/category/home1-category-5.jpg" alt=""></a>
                             <div class="categories-content">
                                 <h3>Potted Plant</h3>
                                 <h4>18 items</h4>
@@ -109,7 +109,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block" >
+                                    <a routerLink="/product/1" class="d-block" >
                                         <img src="assets/images/product/1.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/2.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -138,8 +138,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -148,7 +148,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block" >
+                                    <a routerLink="/product/1" class="d-block" >
                                         <img src="assets/images/product/3.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/4.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -176,8 +176,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -188,7 +188,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/5.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/6.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -216,8 +216,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -226,7 +226,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/2.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/1.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -254,8 +254,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -266,7 +266,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/7.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/8.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -294,8 +294,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -304,7 +304,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/9.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/2.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -332,8 +332,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -344,7 +344,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/3.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/4.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -372,8 +372,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -382,7 +382,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/6.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/5.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -410,8 +410,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -422,7 +422,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/8.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/7.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -450,8 +450,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -460,7 +460,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/9.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/8.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -488,8 +488,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -500,7 +500,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/2.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/1.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -528,8 +528,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -538,7 +538,7 @@
                             <!--Single Product Start-->
                             <div class="single-product position-relative mb-30">
                                 <div class="product-image">
-                                    <a class="d-block">
+                                    <a routerLink="/product/1" class="d-block">
                                         <img src="assets/images/product/9.jpg" alt="" class="product-image-1 w-100">
                                         <img src="assets/images/product/3.jpg" alt="" class="product-image-2 position-absolute w-100">
                                     </a>
@@ -566,8 +566,8 @@
                                         <i class="fa fa-star-o"></i>
                                     </div>
                                     <div class="price-box">
-                                        <span class="regular-price ">$80.00</span>
-                                        <span class="old-price"><del>$90.00</del></span>
+                                        <span class="regular-price ">{{800 | currency: 'PHP'}}</span>
+                                        <span class="old-price"><del>{{900 | currency: 'PHP'}}</del></span>
                                     </div>
                                     <a class="btn product-cart">Add to Cart</a>
                                 </div>
@@ -707,7 +707,7 @@
                 <div class="blog-lst">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a class="d-block">
+                            <a routerLink="/product/1" class="d-block">
                                 <img src="assets/images/blog/blog1.jpg" alt="Blog Image" class="w-100">
                             </a>
                         </div>
@@ -729,7 +729,7 @@
                 <div class="blog-lst">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a class="d-block">
+                            <a routerLink="/product/1" class="d-block">
                                 <img src="assets/images/blog/blog3.jpg" alt="Blog Image" class="w-100">
                             </a>
                         </div>
@@ -751,7 +751,7 @@
                 <div class="blog-lst">
                     <div class="single-blog">
                         <div class="blog-image">
-                            <a class="d-block">
+                            <a routerLink="/product/1" class="d-block">
                                 <img src="assets/images/blog/blog2.jpg" alt="Blog Image" class="w-100">
                             </a>
                         </div>

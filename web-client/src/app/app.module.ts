@@ -12,6 +12,10 @@ import { Observable, interval } from 'rxjs';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
+import { MaterialModule } from './shared/material/material.module';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { AppDateAdapter } from './shared/utility/app-date-adapter';
+import { DateAdapter } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -28,13 +32,16 @@ import { AppRoutingModule } from './app-routing.module';
     RouterModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MaterialModule,
   ],
   providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500} },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomHttpInterceptor,
       multi: true
-    }
+    },
+    {provide: DateAdapter, useClass: AppDateAdapter},
   ],
   bootstrap: [AppComponent]
 })

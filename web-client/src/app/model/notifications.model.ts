@@ -1,4 +1,4 @@
-import { Users } from "./users";
+
 
 export class Notifications {
   notificationId: string;
@@ -7,6 +7,6 @@ export class Notifications {
   type: string;
   referenceId: string;
   isRead: boolean;
-  user: Users;
+  // user: Users;
   date: string;
 }

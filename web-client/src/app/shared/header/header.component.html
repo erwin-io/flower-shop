@@ -1,6 +1,6 @@
 
 <!-- Main Header Area Start -->
-<div class="main-header header-transparent header-sticky">
+<div class="main-header header-sticky {{headerClass}}">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-lg-2 col-xl-2 col-md-6 col-6 col-custom">
@@ -14,7 +14,7 @@
                 <nav class="main-nav d-none d-lg-flex">
                     <ul class="nav">
                         <li>
-                            <a>
+                            <a routerLink="/">
                                 <span class="menu-text"> Home</span>
                             </a>
                         </li>
@@ -24,23 +24,23 @@
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-submenu dropdown-hover">
-                                <li><a>Search Flower</a></li>
-                                <li><a>Categories</a></li>
-                                <li><a>Collections</a></li>
+                                <li><a routerLink="search">Search Flower</a></li>
+                                <li><a routerLink="categories">Categories</a></li>
+                                <li><a routerLink="collections">Collections</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a>
+                        <!-- <li>
+                            <a routerLink="">
                                 <span class="menu-text"> Blog</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li>
-                            <a>
+                            <a routerLink="/about-us" routerLinkActive="active">
                                 <span class="menu-text"> About Us</span>
                             </a>
                         </li>
                         <li>
-                            <a >
+                            <a routerLink="/contact-us" routerLinkActive="active">
                                 <span class="menu-text">Contact Us</span>
                             </a>
                         </li>
@@ -50,6 +50,20 @@
             <div class="col-lg-2 col-md-6 col-6 col-custom">
                 <div class="header-right-area main-nav">
                     <ul class="nav">
+                        <li class="sidemenu-wrap">
+                            <a><i class="fa fa-search"></i> </a>
+                            <ul class="dropdown-sidemenu dropdown-hover-2 dropdown-search">
+                                <li>
+                                    <form action="#">
+                                        <input name="search" id="search" placeholder="Search" type="text">
+                                        <button type="submit"><i class="fa fa-search"></i></button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidemenu-wrap">
+                            <a routerLink="/account"><i class="fa fa-user-circle"></i> </a>
+                        </li>
                         <li class="minicart-wrap">
                             <a class="minicart-btn toolbar-btn">
                                 <i class="fa fa-shopping-cart"></i>
@@ -95,17 +109,6 @@
                                     <a class="btn flosun-button secondary-btn rounded-0">Checkout</a>
                                 </div>
                             </div>
-                        </li>
-                        <li class="sidemenu-wrap">
-                            <a><i class="fa fa-search"></i> </a>
-                            <ul class="dropdown-sidemenu dropdown-hover-2 dropdown-search">
-                                <li>
-                                    <form action="#">
-                                        <input name="search" id="search" placeholder="Search" type="text">
-                                        <button type="submit"><i class="fa fa-search"></i></button>
-                                    </form>
-                                </li>
-                            </ul>
                         </li>
                         <li class="mobile-menu-btn d-lg-none">
                             <a class="off-canvas-btn" (click)="isOpenOffCanvas = true">

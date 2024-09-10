@@ -3,7 +3,24 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  appName: "Shaj Flower shop",
   production: false,
+  oneSignalAppId: "651fe52b-1a5e-4045-b722-5efb0c841f76",
+  apiBaseUrl: "http://localhost:3000/api/v1",
+  api: {
+    auth: {
+      login: "/auth/login/customer/",
+      registerCustomer: "/auth/register/customer/",
+      registerVerify: "/auth/register/verifyCustomer/",
+      resetSubmit: "/auth/reset/customerUserResetPasswordSubmit/",
+      resetVerify: "/auth/reset/customerUserVerify/",
+      resetPassword: "/auth/reset/customerUserResetPassword/",
+    },
+    users: {
+      getByCode: "/customer-user/",
+      updateProfile: "/customer-user/updateCustomerUserProfile/"
+    }
+  }
 };
 
 /*

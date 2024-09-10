@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OneSignalService } from 'src/app/services/one-signal.service';
 import Swiper from 'swiper';
 // Install modules
 @Component({
@@ -11,6 +12,9 @@ export class HomeComponent {
   productSlider: Swiper;
   itemCarousel2: Swiper;
   testimonialCarousel: Swiper;
+
+  constructor() {
+  }
 
   ngAfterViewInit(): void {
     // Home 01 Slider

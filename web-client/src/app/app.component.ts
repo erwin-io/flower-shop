@@ -1,5 +1,13 @@
-import { Component, HostListener, Renderer2 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveEnd, Router, RouterOutlet } from '@angular/router';
+import { environment } from 'src/environments/environment.prod';
+import { OneSignalService } from './services/one-signal.service';
+import { Title } from '@angular/platform-browser';
+import { filter } from 'rxjs';
+import { RouteService } from './services/route.service';
+import { LoaderService } from './services/loader.service';
+import { Modal } from 'bootstrap';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,33 +17,49 @@ export class AppComponent {
   title = 'web-client';
   lastScrollTop = 0;
   showScrollToTop = false;
-  constructor(private renderer: Renderer2) {}
-
-  // Detect scroll events
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (scrollPosition > this.lastScrollTop) {
-      // Scrolling down
-      this.showScrollToTop = false;
-    } else {
-      // Scrolling up
-      if (scrollPosition > 200) {
-        this.showScrollToTop = true;
-      } else {
-        this.showScrollToTop = false;
-      }
-    }
-    
-    this.lastScrollTop = scrollPosition;
+  headerClass = "";
+  footerClass = "";
+  showLoader = false;
+  constructor(
+    private titleService:Title,
+    private router: Router,
+    private renderer: Renderer2, 
+    private routeService: RouteService, 
+    private loaderService: LoaderService, 
+    private oneSignalService: OneSignalService) {
+    this.oneSignalService.init();
+    this.setupTitleListener();
   }
-  // Scroll to the top
-  scrollToTop() {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
+  private setupTitleListener() {
+    this.loaderService.data$.subscribe((res: { show: boolean}) => {
+      if(res.show) {
+        this.showLoader = true;
+      } else {
+        this.showLoader = false;
+      }
     });
+    this.router.events.pipe(filter(e => e instanceof ResolveEnd)).subscribe((e: any) => {
+      const { data } = this.getDeepestChildSnapshot(e.state.root);
+      this.routeService.changeData(data);
+      if(data?.['title']){
+        this.title = data['title'];
+        this.headerClass = data['headerClass'];
+        this.footerClass = data['footerClass'];
+        this.titleService.setTitle(`${this.title} | ${environment.appName}`);
+      }
+    });
+  }
+
+
+  ngAfterViewInit() {
+  }
+  
+
+  getDeepestChildSnapshot(snapshot: ActivatedRouteSnapshot) {
+    let deepestChild = snapshot.firstChild;
+    while (deepestChild?.firstChild) {
+      deepestChild = deepestChild.firstChild
+    };
+    return deepestChild || snapshot
   }
 }

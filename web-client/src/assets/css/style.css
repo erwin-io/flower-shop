@@ -1742,6 +1742,7 @@ mark {
 
 .main-nav > ul > li > a .menu-text {
   position: relative;
+  margin-right: 5px!important;
 }
 
 /*--- Dropdwon ---*/
@@ -5067,7 +5068,7 @@ mark {
 }
 
 .myaccount-content form .single-input-item {
-  display: -webkit-box;
+  /* display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -5076,7 +5077,7 @@ mark {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 100%;
+  width: 100%; */
 }
 
 .myaccount-content form .single-input-item input {
@@ -7196,7 +7197,7 @@ mark {
 /*    Components - Breadcrumb
 /*----------------------------------------*/
 .breadcrumbs-area {
-  padding: 100px 0;
+  padding: 50px 0;
   background: #f6f6f6 url(../images/bg/breadcrumb.jpg) no-repeat scroll center center/cover;
 }
 
