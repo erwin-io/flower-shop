@@ -2,7 +2,7 @@ export const environment = {
   appName: "Shaj Flower shop",
   production: true,
   oneSignalAppId: "09c8c0ed-5d53-42f9-8384-c66c217bd87e",
-  apiBaseUrl: "http://shaj-flower-shop-api.vercel.app/api/v1",
+  apiBaseUrl: "https://shaj-flower-shop-api.vercel.app/api/v1",
   api: {
     auth: {
       login: "/auth/login/customer/",
