@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material/material.module';
 import { AuthGuard } from 'src/app/shared/guard/auth.guard';
