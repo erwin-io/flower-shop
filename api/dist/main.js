@@ -37,7 +37,13 @@ const path_1 = __importDefault(require("path"));
 const dateFns = __importStar(require("date-fns"));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.enableCors();
+    app.enableCors({
+        origin: true,
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+        credentials: true,
+    });
     app.setBaseViewsDir(path_1.default.join(__dirname, "views"));
     app.setViewEngine("hbs");
     hbs_1.default.registerPartials(path_1.default.join(__dirname, "views", "partials"));

@@ -129,3 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .angular
+envs
+api/src/common/envs/development.env
