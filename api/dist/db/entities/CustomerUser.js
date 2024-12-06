@@ -42,10 +42,11 @@ __decorate([
     __metadata("design:type", Boolean)
 ], CustomerUser.prototype, "isVerifiedUser", void 0);
 __decorate([
-    (0, typeorm_1.Column)("boolean", { name: "Active ", default: () => "true" }),
+    (0, typeorm_1.Column)("boolean", { name: "Active", default: () => "true" }),
     __metadata("design:type", Boolean)
 ], CustomerUser.prototype, "active", void 0);
 CustomerUser = __decorate([
+    (0, typeorm_1.Index)("CustomerUser_Active_Email_idx", ["active", "email"], { unique: true }),
     (0, typeorm_1.Index)("CustomerUser_pkey", ["customerUserId"], { unique: true }),
     (0, typeorm_1.Entity)("CustomerUser", { schema: "dbo" })
 ], CustomerUser);

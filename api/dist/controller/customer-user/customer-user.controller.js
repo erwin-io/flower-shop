@@ -24,10 +24,10 @@ let CustomerUserController = class CustomerUserController {
     constructor(customerUserService) {
         this.customerUserService = customerUserService;
     }
-    async getCustomerUserByCode(customerUserCode) {
+    async getByCode(customerUserCode) {
         const res = {};
         try {
-            res.data = await this.customerUserService.getCustomerUserByCode(customerUserCode);
+            res.data = await this.customerUserService.getByCode(customerUserCode);
             res.success = true;
             return res;
         }
@@ -37,10 +37,10 @@ let CustomerUserController = class CustomerUserController {
             return res;
         }
     }
-    async getCustomerUserPagination(paginationParams) {
+    async getPagination(paginationParams) {
         const res = {};
         try {
-            res.data = await this.customerUserService.getCustomerUserPagination(paginationParams);
+            res.data = await this.customerUserService.getPagination(paginationParams);
             res.success = true;
             return res;
         }
@@ -50,12 +50,12 @@ let CustomerUserController = class CustomerUserController {
             return res;
         }
     }
-    async createCustomerUser(dto) {
+    async create(dto) {
         const res = {};
         try {
-            res.data = await this.customerUserService.createCustomerUser(dto);
+            res.data = await this.customerUserService.create(dto);
             res.success = true;
-            res.message = `User  ${api_response_constant_1.SAVING_SUCCESS}`;
+            res.message = `Customer user ${api_response_constant_1.SAVING_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -64,12 +64,12 @@ let CustomerUserController = class CustomerUserController {
             return res;
         }
     }
-    async updateCustomerUserProfile(customerUserCode, dto) {
+    async updateProfile(customerUserCode, dto) {
         const res = {};
         try {
-            res.data = await this.customerUserService.updateCustomerUserProfile(customerUserCode, dto);
+            res.data = await this.customerUserService.updateProfile(customerUserCode, dto);
             res.success = true;
-            res.message = `User ${api_response_constant_1.UPDATE_SUCCESS}`;
+            res.message = `Customer user ${api_response_constant_1.UPDATE_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -78,12 +78,12 @@ let CustomerUserController = class CustomerUserController {
             return res;
         }
     }
-    async updateCustomertUser(customerUserCode, dto) {
+    async update(customerUserCode, dto) {
         const res = {};
         try {
-            res.data = await this.customerUserService.updateCustomertUser(customerUserCode, dto);
+            res.data = await this.customerUserService.update(customerUserCode, dto);
             res.success = true;
-            res.message = `User ${api_response_constant_1.UPDATE_SUCCESS}`;
+            res.message = `Customer user ${api_response_constant_1.UPDATE_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -92,12 +92,12 @@ let CustomerUserController = class CustomerUserController {
             return res;
         }
     }
-    async deleteUser(customerUserCode) {
+    async delete(customerUserCode) {
         const res = {};
         try {
-            res.data = await this.customerUserService.deleteUser(customerUserCode);
+            res.data = await this.customerUserService.delete(customerUserCode);
             res.success = true;
-            res.message = `User ${api_response_constant_1.DELETE_SUCCESS}`;
+            res.message = `Customer user ${api_response_constant_1.DELETE_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -113,44 +113,44 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "getCustomerUserByCode", null);
+], CustomerUserController.prototype, "getByCode", null);
 __decorate([
     (0, common_1.Post)("/page"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "getCustomerUserPagination", null);
+], CustomerUserController.prototype, "getPagination", null);
 __decorate([
-    (0, common_1.Post)("/createCustomerUser"),
+    (0, common_1.Post)(""),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [customer_user_create_dto_1.CreateCustomerUserDto]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "createCustomerUser", null);
+], CustomerUserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Put)("/updateCustomerUserProfile/:customerUserCode"),
+    (0, common_1.Put)("/updateProfile/:customerUserCode"),
     __param(0, (0, common_1.Param)("customerUserCode")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, customer_user_update_dto_1.UpdateCustomerUserProfileDto]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "updateCustomerUserProfile", null);
+], CustomerUserController.prototype, "updateProfile", null);
 __decorate([
-    (0, common_1.Put)("/updateCustomertUser/:customerUserCode"),
+    (0, common_1.Put)("/:customerUserCode"),
     __param(0, (0, common_1.Param)("usercustomerUserCodeCode")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, customer_user_update_dto_1.UpdateCustomerUserDto]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "updateCustomertUser", null);
+], CustomerUserController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)("/:customerUserCode"),
     __param(0, (0, common_1.Param)("customerUserCode")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], CustomerUserController.prototype, "deleteUser", null);
+], CustomerUserController.prototype, "delete", null);
 CustomerUserController = __decorate([
     (0, swagger_1.ApiTags)("customer-user"),
     (0, common_1.Controller)("customer-user"),

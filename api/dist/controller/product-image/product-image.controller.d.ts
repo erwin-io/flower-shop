@@ -6,11 +6,11 @@ import { ProductImageService } from "src/services/product-image.service";
 export declare class ProductImageController {
     private readonly collectionService;
     constructor(collectionService: ProductImageService);
-    getDetails(productImageId: string): Promise<ApiResponseModel<ProductImage>>;
-    getPaginated(params: PaginationParamsDto): Promise<ApiResponseModel<{
+    getById(productImageId: string): Promise<ApiResponseModel<ProductImage>>;
+    getPagination(params: PaginationParamsDto): Promise<ApiResponseModel<{
         results: ProductImage[];
         total: number;
     }>>;
-    addProduct(accessDto: CreateProductImageDto): Promise<ApiResponseModel<ProductImage>>;
+    add(accessDto: CreateProductImageDto): Promise<ApiResponseModel<ProductImage>>;
     delete(collectionId: string): Promise<ApiResponseModel<ProductImage>>;
 }

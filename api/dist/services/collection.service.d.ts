@@ -5,13 +5,13 @@ import { Repository } from "typeorm";
 export declare class CollectionService {
     private readonly collectionRepo;
     constructor(collectionRepo: Repository<Collection>);
-    getCollectionPagination({ pageSize, pageIndex, order, columnDef }: {
+    getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;
         order: any;
         columnDef: any;
     }): Promise<{
-        results: Collection[];
+        results: any[];
         total: number;
     }>;
     getById(collectionId: any): Promise<Collection>;

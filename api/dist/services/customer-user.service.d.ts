@@ -7,7 +7,7 @@ export declare class CustomerUserService {
     private firebaseProvoder;
     private readonly customerUserRepo;
     constructor(firebaseProvoder: FirebaseProvider, customerUserRepo: Repository<CustomerUser>);
-    getCustomerUserPagination({ pageSize, pageIndex, order, columnDef }: {
+    getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;
         order: any;
@@ -16,9 +16,9 @@ export declare class CustomerUserService {
         results: CustomerUser[];
         total: number;
     }>;
-    getCustomerUserByCode(customerUserCode: any): Promise<CustomerUser>;
-    createCustomerUser(dto: CreateCustomerUserDto): Promise<CustomerUser>;
-    updateCustomerUserProfile(customerUserCode: any, dto: UpdateCustomerUserProfileDto): Promise<CustomerUser>;
-    updateCustomertUser(customerUserCode: any, dto: UpdateCustomerUserDto): Promise<CustomerUser>;
-    deleteUser(customerUserCode: any): Promise<CustomerUser>;
+    getByCode(customerUserCode: any): Promise<CustomerUser>;
+    create(dto: CreateCustomerUserDto): Promise<CustomerUser>;
+    updateProfile(customerUserCode: any, dto: UpdateCustomerUserProfileDto): Promise<CustomerUser>;
+    update(customerUserCode: any, dto: UpdateCustomerUserDto): Promise<CustomerUser>;
+    delete(customerUserCode: any): Promise<CustomerUser>;
 }

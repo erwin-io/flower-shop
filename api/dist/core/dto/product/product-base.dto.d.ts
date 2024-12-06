@@ -4,6 +4,6 @@ export declare class DefaultProductDto {
     longDesc: string;
     price: string;
     discountPrice: string;
-    size: string;
+    size: number;
     categoryId: string;
 }

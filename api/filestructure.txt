@@ -22,11 +22,12 @@
             |-- auth-error.constant.ts
             |-- category.constant.ts
             |-- collection.constant.ts
+            |-- customer-user-error.constant.ts
             |-- date.constant.ts
             |-- product.constant.ts
             |-- staff-access.constant.ts
+            |-- staff-user-error.constant.ts
             |-- timestamp.constant.ts
-            |-- user-error.constant.ts
         |-- decorator
             |-- api-filter-query.ts
         |-- envs
@@ -90,6 +91,7 @@
                 |-- customer-user.create.dto.ts
                 |-- customer-user.update.dto.ts
             |-- match.decorator.dto.ts
+            |-- non-negative.dto.ts
             |-- pagination-params.dto.ts
             |-- product
                 |-- product-base.dto.ts

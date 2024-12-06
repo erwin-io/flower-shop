@@ -42,11 +42,11 @@ export class ProductController {
 
   @Post("/page")
   //   @UseGuards(JwtAuthGuard)
-  async getPaginated(@Body() params: PaginationParamsDto) {
+  async getPagination(@Body() params: PaginationParamsDto) {
     const res: ApiResponseModel<{ results: Product[]; total: number }> =
       {} as any;
     try {
-      res.data = await this.productService.getProductPagination(params);
+      res.data = await this.productService.getPagination(params);
       res.success = true;
       return res;
     } catch (e) {

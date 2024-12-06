@@ -7,8 +7,10 @@ import {
   IsNotEmpty,
   IsNumberString,
   IsOptional,
+  Validate,
   ValidateNested,
 } from "class-validator";
+import { IsNonNegativeConstraint } from "../non-negative.dto";
 
 export class DefaultCollectionDto {
   @ApiProperty()
@@ -21,5 +23,7 @@ export class DefaultCollectionDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumberString()
+  @Validate(IsNonNegativeConstraint) // Custom validation applied here
   sequenceId: string;
 }

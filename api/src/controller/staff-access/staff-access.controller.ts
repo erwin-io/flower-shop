@@ -20,8 +20,8 @@ import { ApiResponseModel } from "src/core/models/api-response.model";
 import { StaffAccess } from "src/db/entities/StaffAccess";
 import { StaffAccessService } from "src/services/staff-access.service";
 
-@ApiTags("access")
-@Controller("access")
+@ApiTags("staff-access")
+@Controller("staff-access")
 export class StaffAccessController {
   constructor(private readonly staffAccessService: StaffAccessService) {}
 
@@ -46,7 +46,7 @@ export class StaffAccessController {
     const res: ApiResponseModel<{ results: StaffAccess[]; total: number }> =
       {} as any;
     try {
-      res.data = await this.staffAccessService.getStaffAccessPagination(params);
+      res.data = await this.staffAccessService.getPagination(params);
       res.success = true;
       return res;
     } catch (e) {

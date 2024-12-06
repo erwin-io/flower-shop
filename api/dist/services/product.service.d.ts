@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 export declare class ProductService {
     private readonly productRepo;
     constructor(productRepo: Repository<Product>);
-    getProductPagination({ pageSize, pageIndex, order, columnDef }: {
+    getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;
         order: any;

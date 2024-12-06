@@ -45,6 +45,10 @@ __decorate([
     __metadata("design:type", Array)
 ], Category.prototype, "products", void 0);
 Category = __decorate([
+    (0, typeorm_1.Index)("Category_Name_Active_idx", ["active", "name"], { unique: true }),
+    (0, typeorm_1.Index)("Category_SequenceId_Active_idx", ["active", "sequenceId"], {
+        unique: true,
+    }),
     (0, typeorm_1.Index)("Category_pkey", ["categoryId"], { unique: true }),
     (0, typeorm_1.Entity)("Category", { schema: "dbo" })
 ], Category);

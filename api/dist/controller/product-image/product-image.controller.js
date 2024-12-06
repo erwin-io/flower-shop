@@ -23,7 +23,7 @@ let ProductImageController = class ProductImageController {
     constructor(collectionService) {
         this.collectionService = collectionService;
     }
-    async getDetails(productImageId) {
+    async getById(productImageId) {
         const res = {};
         try {
             res.data = await this.collectionService.getById(productImageId);
@@ -36,7 +36,7 @@ let ProductImageController = class ProductImageController {
             return res;
         }
     }
-    async getPaginated(params) {
+    async getPagination(params) {
         const res = {};
         try {
             res.data = await this.collectionService.getPagination(params);
@@ -49,12 +49,12 @@ let ProductImageController = class ProductImageController {
             return res;
         }
     }
-    async addProduct(accessDto) {
+    async add(accessDto) {
         const res = {};
         try {
             res.data = await this.collectionService.create(accessDto);
             res.success = true;
-            res.message = `Product Collection ${api_response_constant_1.SAVING_SUCCESS}`;
+            res.message = `Product image ${api_response_constant_1.SAVING_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -68,7 +68,7 @@ let ProductImageController = class ProductImageController {
         try {
             res.data = await this.collectionService.delete(collectionId);
             res.success = true;
-            res.message = `Product Collection ${api_response_constant_1.DELETE_SUCCESS}`;
+            res.message = `Product image ${api_response_constant_1.DELETE_SUCCESS}`;
             return res;
         }
         catch (e) {
@@ -84,21 +84,21 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], ProductImageController.prototype, "getDetails", null);
+], ProductImageController.prototype, "getById", null);
 __decorate([
     (0, common_1.Post)("/page"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], ProductImageController.prototype, "getPaginated", null);
+], ProductImageController.prototype, "getPagination", null);
 __decorate([
     (0, common_1.Post)(""),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [product_image_create_dto_1.CreateProductImageDto]),
     __metadata("design:returntype", Promise)
-], ProductImageController.prototype, "addProduct", null);
+], ProductImageController.prototype, "add", null);
 __decorate([
     (0, common_1.Delete)("/:collectionId"),
     __param(0, (0, common_1.Param)("collectionId")),

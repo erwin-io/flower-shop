@@ -47,6 +47,7 @@ const collection_module_1 = require("./controller/collection/collection.module")
 const product_module_1 = require("./controller/product/product.module");
 const ProductCollection_1 = require("./db/entities/ProductCollection");
 const product_image_module_1 = require("./controller/product-image/product-image.module");
+const product_collection_module_1 = require("./controller/product-collection/product-collection.module");
 const envFilePath = (0, utils_1.getEnvPath)(`${__dirname}/common/envs`);
 let AppModule = class AppModule {
 };
@@ -70,7 +71,8 @@ AppModule = __decorate([
             collection_module_1.CollectionModule,
             product_module_1.ProductModule,
             ProductCollection_1.ProductCollection,
-            product_image_module_1.ProductImageModule
+            product_image_module_1.ProductImageModule,
+            product_collection_module_1.ProductCollectionModule
         ],
         providers: [app_service_1.AppService],
         controllers: [],

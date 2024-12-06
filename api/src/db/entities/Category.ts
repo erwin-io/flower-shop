@@ -10,6 +10,10 @@ import {
 import { File } from "./File";
 import { Product } from "./Product";
 
+@Index("Category_Name_Active_idx", ["active", "name"], { unique: true })
+@Index("Category_SequenceId_Active_idx", ["active", "sequenceId"], {
+  unique: true,
+})
 @Index("Category_pkey", ["categoryId"], { unique: true })
 @Entity("Category", { schema: "dbo" })
 export class Category {

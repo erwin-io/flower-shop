@@ -50,6 +50,9 @@ __decorate([
     __metadata("design:type", StaffAccess_1.StaffAccess)
 ], StaffUser.prototype, "staffAccess", void 0);
 StaffUser = __decorate([
+    (0, typeorm_1.Index)("StaffUser_UserName_Active_idx", ["active", "userName"], {
+        unique: true,
+    }),
     (0, typeorm_1.Index)("StaffUser_pkey", ["staffUserId"], { unique: true }),
     (0, typeorm_1.Entity)("StaffUser", { schema: "dbo" })
 ], StaffUser);

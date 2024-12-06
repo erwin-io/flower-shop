@@ -24,10 +24,10 @@ let StaffUserController = class StaffUserController {
     constructor(staffUserService) {
         this.staffUserService = staffUserService;
     }
-    async getStaffUserByCode(staffUserCode) {
+    async getByCode(staffUserCode) {
         const res = {};
         try {
-            res.data = await this.staffUserService.getStaffUserByCode(staffUserCode);
+            res.data = await this.staffUserService.getByCode(staffUserCode);
             res.success = true;
             return res;
         }
@@ -37,10 +37,10 @@ let StaffUserController = class StaffUserController {
             return res;
         }
     }
-    async getStaffUserPagination(paginationParams) {
+    async getPagination(paginationParams) {
         const res = {};
         try {
-            res.data = await this.staffUserService.getStaffUserPagination(paginationParams);
+            res.data = await this.staffUserService.getPagination(paginationParams);
             res.success = true;
             return res;
         }
@@ -50,10 +50,10 @@ let StaffUserController = class StaffUserController {
             return res;
         }
     }
-    async createClientUser(dto) {
+    async create(dto) {
         const res = {};
         try {
-            res.data = await this.staffUserService.createStaffUsers(dto);
+            res.data = await this.staffUserService.create(dto);
             res.success = true;
             res.message = `User  ${api_response_constant_1.SAVING_SUCCESS}`;
             return res;
@@ -64,10 +64,10 @@ let StaffUserController = class StaffUserController {
             return res;
         }
     }
-    async updateStaffUserProfile(staffUserCode, dto) {
+    async updateProfile(staffUserCode, dto) {
         const res = {};
         try {
-            res.data = await this.staffUserService.updateStaffUserProfile(staffUserCode, dto);
+            res.data = await this.staffUserService.updateProfile(staffUserCode, dto);
             res.success = true;
             res.message = `User ${api_response_constant_1.UPDATE_SUCCESS}`;
             return res;
@@ -78,10 +78,10 @@ let StaffUserController = class StaffUserController {
             return res;
         }
     }
-    async updateStaffUser(staffUserCode, dto) {
+    async update(staffUserCode, dto) {
         const res = {};
         try {
-            res.data = await this.staffUserService.updateStaffUser(staffUserCode, dto);
+            res.data = await this.staffUserService.update(staffUserCode, dto);
             res.success = true;
             res.message = `User ${api_response_constant_1.UPDATE_SUCCESS}`;
             return res;
@@ -92,10 +92,10 @@ let StaffUserController = class StaffUserController {
             return res;
         }
     }
-    async deleteUser(staffUserCode) {
+    async delete(staffUserCode) {
         const res = {};
         try {
-            res.data = await this.staffUserService.deleteUser(staffUserCode);
+            res.data = await this.staffUserService.delete(staffUserCode);
             res.success = true;
             res.message = `User ${api_response_constant_1.DELETE_SUCCESS}`;
             return res;
@@ -113,44 +113,44 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "getStaffUserByCode", null);
+], StaffUserController.prototype, "getByCode", null);
 __decorate([
     (0, common_1.Post)("/page"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "getStaffUserPagination", null);
+], StaffUserController.prototype, "getPagination", null);
 __decorate([
-    (0, common_1.Post)("/createClientUser"),
+    (0, common_1.Post)(""),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [staff_user_create_dto_1.CreateStaffUserDto]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "createClientUser", null);
+], StaffUserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Put)("/updateStaffUserProfile/:staffUserCode"),
+    (0, common_1.Put)("/updateProfile/:staffUserCode"),
     __param(0, (0, common_1.Param)("staffUserCode")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, staff_user_update_dto_1.UpdateStaffUserProfileDto]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "updateStaffUserProfile", null);
+], StaffUserController.prototype, "updateProfile", null);
 __decorate([
-    (0, common_1.Put)("/updateStaffUser/:staffUserCode"),
-    __param(0, (0, common_1.Param)("userstaffUserCodeCode")),
+    (0, common_1.Put)("/:staffUserCode"),
+    __param(0, (0, common_1.Param)("staffUserCode")),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, staff_user_update_dto_1.UpdateStaffUserDto]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "updateStaffUser", null);
+], StaffUserController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)("/:staffUserCode"),
     __param(0, (0, common_1.Param)("staffUserCode")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], StaffUserController.prototype, "deleteUser", null);
+], StaffUserController.prototype, "delete", null);
 StaffUserController = __decorate([
     (0, swagger_1.ApiTags)("staff-user"),
     (0, common_1.Controller)("staff-user"),

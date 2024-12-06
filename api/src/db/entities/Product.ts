@@ -12,6 +12,8 @@ import { File } from "./File";
 import { ProductCollection } from "./ProductCollection";
 import { ProductImage } from "./ProductImage";
 
+@Index("Product_Name_Active_idx", ["active", "name"], { unique: true })
+@Index("Product_SKU_Active_idx", ["active", "sku"], { unique: true })
 @Index("Product_pkey", ["productId"], { unique: true })
 @Entity("Product", { schema: "dbo" })
 export class Product {

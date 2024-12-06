@@ -131,3 +131,4 @@ dist
 .angular
 envs
 api/src/common/envs/development.env
+api/src/common/envs/development.env

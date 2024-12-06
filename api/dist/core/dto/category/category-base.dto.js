@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DefaultCategoryDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const non_negative_dto_1 = require("../non-negative.dto");
 class DefaultCategoryDto {
 }
 __decorate([
@@ -27,6 +28,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
+    (0, class_validator_1.Validate)(non_negative_dto_1.IsNonNegativeConstraint),
     __metadata("design:type", String)
 ], DefaultCategoryDto.prototype, "sequenceId", void 0);
 exports.DefaultCategoryDto = DefaultCategoryDto;

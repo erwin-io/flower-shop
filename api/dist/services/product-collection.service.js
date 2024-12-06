@@ -33,6 +33,12 @@ let ProductCollectionService = class ProductCollectionService {
         const [results, total] = await Promise.all([
             this.collectionRepo.find({
                 where: Object.assign(Object.assign({}, condition), { active: true }),
+                relations: {
+                    collection: true,
+                    product: {
+                        category: true,
+                    }
+                },
                 skip,
                 take,
                 order,
@@ -100,6 +106,7 @@ let ProductCollectionService = class ProductCollectionService {
             if (productCollection) {
                 throw Error("The product has already been added to the collection!");
             }
+            productCollection = new ProductCollection_1.ProductCollection();
             productCollection.collection = collection;
             productCollection.product = product;
             productCollection = await entityManager.save(ProductCollection_1.ProductCollection, productCollection);

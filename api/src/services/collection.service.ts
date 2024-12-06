@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { COLLECTION_ERROR_NOT_FOUND } from "src/common/constant/collection.constant";
+import {
+  COLLECTION_ERROR_DUPLICATE,
+  COLLECTION_ERROR_NOT_FOUND,
+} from "src/common/constant/collection.constant";
 import { PRODUCT_ERROR_NOT_FOUND } from "src/common/constant/product.constant";
 import {
   columnDefToTypeORMCondition,
@@ -20,13 +23,13 @@ export class CollectionService {
     private readonly collectionRepo: Repository<Collection>
   ) {}
 
-  async getCollectionPagination({ pageSize, pageIndex, order, columnDef }) {
+  async getPagination({ pageSize, pageIndex, order, columnDef }) {
     const skip =
       Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
     const take = Number(pageSize);
 
     const condition = columnDefToTypeORMCondition(columnDef);
-    const [results, total] = await Promise.all([
+    const [results, total, productCollections] = await Promise.all([
       this.collectionRepo.find({
         where: {
           ...condition,
@@ -42,9 +45,45 @@ export class CollectionService {
           active: true,
         },
       }),
+      this.collectionRepo
+        .find({
+          select: {
+            collectionId: true,
+          },
+          where: {
+            ...condition,
+            active: true,
+          },
+          skip,
+          take,
+          order,
+        })
+        .then(async (res) => {
+          const collectionIds = res.map((x) => x.collectionId);
+          // return collectionIds;
+          const query = await this.collectionRepo.query(`
+            SELECT c."CollectionId" as "collectionId",
+            COUNT(pc."CollectionId")
+            FROM dbo."Collection" c
+            LEFT JOIN dbo."ProductCollection" pc ON c."CollectionId" = pc."CollectionId"
+            WHERE pc."Active" = true AND c."CollectionId" IN(${collectionIds.join(
+              ","
+            )})
+            GROUP BY c."CollectionId"`);
+          return query as { collectionId: string; count: number }[];
+        }),
     ]);
     return {
-      results,
+      results: results.map((x) => {
+        x["productCollectionCount"] = productCollections.some(
+          (pc) => x.collectionId.toString() === pc.collectionId.toString()
+        )
+          ? productCollections.find(
+              (pc) => x.collectionId.toString() === pc.collectionId.toString()
+            ).count
+          : 0;
+        return x;
+      }) as any[],
       total,
     };
   }
@@ -69,11 +108,20 @@ export class CollectionService {
   async create(dto: CreateCollectionDto) {
     return await this.collectionRepo.manager.transaction(
       async (entityManager) => {
-        let collection = new Collection();
-        collection.name = dto.name;
-        collection.desc = dto.desc;
-        collection = await entityManager.save(Collection, collection);
-        return await entityManager.save(Collection, collection);
+        try {
+          let collection = new Collection();
+          collection.name = dto.name;
+          collection.desc = dto.desc;
+          collection.sequenceId = dto.sequenceId;
+          collection = await entityManager.save(Collection, collection);
+          return await entityManager.save(Collection, collection);
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw Error(COLLECTION_ERROR_DUPLICATE);
+          } else {
+            throw ex;
+          }
+        }
       }
     );
   }
@@ -81,18 +129,27 @@ export class CollectionService {
   async update(collectionId, dto: UpdateCollectionDto) {
     return await this.collectionRepo.manager.transaction(
       async (entityManager) => {
-        const collection = await entityManager.findOne(Collection, {
-          where: {
-            collectionId,
-            active: true,
-          },
-        });
-        if (!collection) {
-          throw Error(COLLECTION_ERROR_NOT_FOUND);
+        try {
+          const collection = await entityManager.findOne(Collection, {
+            where: {
+              collectionId,
+              active: true,
+            },
+          });
+          if (!collection) {
+            throw Error(COLLECTION_ERROR_NOT_FOUND);
+          }
+          collection.name = dto.name;
+          collection.desc = dto.desc;
+          collection.sequenceId = dto.sequenceId;
+          return await entityManager.save(Collection, collection);
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw Error(COLLECTION_ERROR_DUPLICATE);
+          } else {
+            throw ex;
+          }
         }
-        collection.name = dto.name;
-        collection.desc = dto.desc;
-        return await entityManager.save(Collection, collection);
       }
     );
   }

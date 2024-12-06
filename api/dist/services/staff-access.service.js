@@ -23,7 +23,7 @@ let StaffAccessService = class StaffAccessService {
     constructor(staffAccessRepo) {
         this.staffAccessRepo = staffAccessRepo;
     }
-    async getStaffAccessPagination({ pageSize, pageIndex, order, columnDef }) {
+    async getPagination({ pageSize, pageIndex, order, columnDef }) {
         const skip = Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
         const take = Number(pageSize);
         const condition = (0, utils_1.columnDefToTypeORMCondition)(columnDef);
@@ -46,8 +46,10 @@ let StaffAccessService = class StaffAccessService {
     async getByCode(staffAccessCode) {
         const result = await this.staffAccessRepo.findOne({
             select: {
+                staffAccessId: true,
+                staffAccessCode: true,
                 name: true,
-                staffAccessPages: true,
+                accessPages: true,
             },
             where: {
                 staffAccessCode,
@@ -61,28 +63,48 @@ let StaffAccessService = class StaffAccessService {
     }
     async create(dto) {
         return await this.staffAccessRepo.manager.transaction(async (entityManager) => {
-            let staffAccess = new StaffAccess_1.StaffAccess();
-            staffAccess.name = dto.name;
-            staffAccess.accessPages = dto.accessPages;
-            staffAccess = await entityManager.save(staffAccess);
-            staffAccess.staffAccessCode = (0, utils_1.generateIndentityCode)(staffAccess.staffAccessId);
-            return await entityManager.save(StaffAccess_1.StaffAccess, staffAccess);
+            try {
+                let staffAccess = new StaffAccess_1.StaffAccess();
+                staffAccess.name = dto.name;
+                staffAccess.accessPages = dto.accessPages;
+                staffAccess = await entityManager.save(staffAccess);
+                staffAccess.staffAccessCode = (0, utils_1.generateIndentityCode)(staffAccess.staffAccessId);
+                return await entityManager.save(StaffAccess_1.StaffAccess, staffAccess);
+            }
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(staff_access_constant_1.STAFF_ACCESS_ERROR_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
     async update(staffAccessCode, dto) {
         return await this.staffAccessRepo.manager.transaction(async (entityManager) => {
-            const staffAccess = await entityManager.findOne(StaffAccess_1.StaffAccess, {
-                where: {
-                    staffAccessCode,
-                    active: true,
-                },
-            });
-            if (!staffAccess) {
-                throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
+            try {
+                const staffAccess = await entityManager.findOne(StaffAccess_1.StaffAccess, {
+                    where: {
+                        staffAccessCode,
+                        active: true,
+                    },
+                });
+                if (!staffAccess) {
+                    throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
+                }
+                staffAccess.name = dto.name;
+                staffAccess.accessPages = dto.accessPages;
+                return await entityManager.save(StaffAccess_1.StaffAccess, staffAccess);
             }
-            staffAccess.name = dto.name;
-            staffAccess.accessPages = dto.accessPages;
-            return await entityManager.save(StaffAccess_1.StaffAccess, staffAccess);
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(staff_access_constant_1.STAFF_ACCESS_ERROR_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
     async delete(staffAccessCode) {

@@ -34,6 +34,12 @@ export class ProductCollectionService {
           ...condition,
           active: true,
         },
+        relations: {
+          collection: true,
+          product: {
+            category: true,
+          }
+        },
         skip,
         take,
         order,
@@ -107,6 +113,7 @@ export class ProductCollectionService {
         if (productCollection) {
           throw Error("The product has already been added to the collection!");
         }
+        productCollection = new ProductCollection();
         productCollection.collection = collection;
         productCollection.product = product;
         productCollection = await entityManager.save(

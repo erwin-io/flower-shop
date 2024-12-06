@@ -16,7 +16,7 @@ exports.CustomerUserService = void 0;
 const utils_1 = require("../common/utils/utils");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_error_constant_1 = require("../common/constant/user-error.constant");
+const customer_user_error_constant_1 = require("../common/constant/customer-user-error.constant");
 const firebase_provider_1 = require("../core/provider/firebase/firebase-provider");
 const CustomerUser_1 = require("../db/entities/CustomerUser");
 const typeorm_2 = require("typeorm");
@@ -25,7 +25,7 @@ let CustomerUserService = class CustomerUserService {
         this.firebaseProvoder = firebaseProvoder;
         this.customerUserRepo = customerUserRepo;
     }
-    async getCustomerUserPagination({ pageSize, pageIndex, order, columnDef }) {
+    async getPagination({ pageSize, pageIndex, order, columnDef }) {
         const skip = Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
         const take = Number(pageSize);
         const condition = (0, utils_1.columnDefToTypeORMCondition)(columnDef);
@@ -49,7 +49,7 @@ let CustomerUserService = class CustomerUserService {
             total,
         };
     }
-    async getCustomerUserByCode(customerUserCode) {
+    async getByCode(customerUserCode) {
         const res = await this.customerUserRepo.findOne({
             where: {
                 customerUserCode,
@@ -58,37 +58,47 @@ let CustomerUserService = class CustomerUserService {
             relations: {},
         });
         if (!res) {
-            throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+            throw Error(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_NOT_FOUND);
         }
         if (res.password)
             delete res.password;
         return res;
     }
-    async createCustomerUser(dto) {
+    async create(dto) {
         return await this.customerUserRepo.manager.transaction(async (entityManager) => {
             var _a;
-            let customerUser = new CustomerUser_1.CustomerUser();
-            customerUser.email = dto.email;
-            customerUser.password = await (0, utils_1.hash)(dto.password);
-            customerUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
-            customerUser.email = dto.email;
-            customerUser.currentOtp = "0";
-            customerUser.isVerifiedUser = true;
-            customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
-            customerUser.customerUserCode = (0, utils_1.generateIndentityCode)(customerUser.customerUserId);
-            customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
-            customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
-                where: {
-                    customerUserCode: customerUser.customerUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            delete customerUser.password;
-            return customerUser;
+            try {
+                let customerUser = new CustomerUser_1.CustomerUser();
+                customerUser.email = dto.email;
+                customerUser.password = await (0, utils_1.hash)(dto.password);
+                customerUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
+                customerUser.email = dto.email;
+                customerUser.currentOtp = "0";
+                customerUser.isVerifiedUser = true;
+                customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
+                customerUser.customerUserCode = (0, utils_1.generateIndentityCode)(customerUser.customerUserId);
+                customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
+                customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
+                    where: {
+                        customerUserCode: customerUser.customerUserCode,
+                        active: true,
+                    },
+                    relations: {},
+                });
+                delete customerUser.password;
+                return customerUser;
+            }
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
-    async updateCustomerUserProfile(customerUserCode, dto) {
+    async updateProfile(customerUserCode, dto) {
         return await this.customerUserRepo.manager.transaction(async (entityManager) => {
             var _a;
             let customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
@@ -99,7 +109,7 @@ let CustomerUserService = class CustomerUserService {
                 relations: {},
             });
             if (!customerUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+                throw Error(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_NOT_FOUND);
             }
             customerUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
             customerUser.email = dto.email;
@@ -115,33 +125,43 @@ let CustomerUserService = class CustomerUserService {
             return customerUser;
         });
     }
-    async updateCustomertUser(customerUserCode, dto) {
+    async update(customerUserCode, dto) {
         return await this.customerUserRepo.manager.transaction(async (entityManager) => {
-            let customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
-                where: {
-                    customerUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            if (!customerUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+            try {
+                let customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
+                    where: {
+                        customerUserCode,
+                        active: true,
+                    },
+                    relations: {},
+                });
+                if (!customerUser) {
+                    throw Error(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_NOT_FOUND);
+                }
+                customerUser.name = dto.name;
+                customerUser.email = dto.email;
+                customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
+                customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
+                    where: {
+                        customerUserCode,
+                        active: true,
+                    },
+                    relations: {},
+                });
+                delete customerUser.password;
+                return customerUser;
             }
-            customerUser.name = dto.name;
-            customerUser.email = dto.email;
-            customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);
-            customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
-                where: {
-                    customerUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            delete customerUser.password;
-            return customerUser;
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
-    async deleteUser(customerUserCode) {
+    async delete(customerUserCode) {
         return await this.customerUserRepo.manager.transaction(async (entityManager) => {
             let customerUser = await entityManager.findOne(CustomerUser_1.CustomerUser, {
                 where: {
@@ -151,7 +171,7 @@ let CustomerUserService = class CustomerUserService {
                 relations: {},
             });
             if (!customerUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+                throw Error(customer_user_error_constant_1.CUSTOMER_USER_ERROR_USER_NOT_FOUND);
             }
             customerUser.active = false;
             customerUser = await entityManager.save(CustomerUser_1.CustomerUser, customerUser);

@@ -32,21 +32,31 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
     __metadata("design:type", String)
 ], DefaultProductDto.prototype, "price", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
     __metadata("design:type", String)
 ], DefaultProductDto.prototype, "discountPrice", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({
+        description: "Size value, must be 1, 2, or 3",
+        enum: [1, 2, 3],
+        example: 1,
+    }),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsIn)([1, 2, 3], {
+        message: "Size must be one of the following values: 1, 2, or 3",
+    }),
+    __metadata("design:type", Number)
 ], DefaultProductDto.prototype, "size", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumberString)(),
     __metadata("design:type", String)
 ], DefaultProductDto.prototype, "categoryId", void 0);
 exports.DefaultProductDto = DefaultProductDto;

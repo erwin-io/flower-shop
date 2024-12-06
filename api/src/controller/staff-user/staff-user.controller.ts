@@ -35,10 +35,10 @@ export class StaffUserController {
 
   @Get("/:staffUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async getStaffUserByCode(@Param("staffUserCode") staffUserCode: string) {
+  async getByCode(@Param("staffUserCode") staffUserCode: string) {
     const res = {} as ApiResponseModel<StaffUser>;
     try {
-      res.data = await this.staffUserService.getStaffUserByCode(staffUserCode);
+      res.data = await this.staffUserService.getByCode(staffUserCode);
       res.success = true;
       return res;
     } catch (e) {
@@ -50,13 +50,11 @@ export class StaffUserController {
 
   @Post("/page")
   //   @UseGuards(JwtAuthGuard)
-  async getStaffUserPagination(@Body() paginationParams: PaginationParamsDto) {
+  async getPagination(@Body() paginationParams: PaginationParamsDto) {
     const res: ApiResponseModel<{ results: StaffUser[]; total: number }> =
       {} as any;
     try {
-      res.data = await this.staffUserService.getStaffUserPagination(
-        paginationParams
-      );
+      res.data = await this.staffUserService.getPagination(paginationParams);
       res.success = true;
       return res;
     } catch (e) {
@@ -66,12 +64,12 @@ export class StaffUserController {
     }
   }
 
-  @Post("/createClientUser")
+  @Post("")
   //   @UseGuards(JwtAuthGuard)
-  async createClientUser(@Body() dto: CreateStaffUserDto) {
+  async create(@Body() dto: CreateStaffUserDto) {
     const res: ApiResponseModel<StaffUser> = {} as any;
     try {
-      res.data = await this.staffUserService.createStaffUsers(dto);
+      res.data = await this.staffUserService.create(dto);
       res.success = true;
       res.message = `User  ${SAVING_SUCCESS}`;
       return res;
@@ -82,18 +80,15 @@ export class StaffUserController {
     }
   }
 
-  @Put("/updateStaffUserProfile/:staffUserCode")
+  @Put("/updateProfile/:staffUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async updateStaffUserProfile(
+  async updateProfile(
     @Param("staffUserCode") staffUserCode: string,
     @Body() dto: UpdateStaffUserProfileDto
   ) {
     const res: ApiResponseModel<StaffUser> = {} as any;
     try {
-      res.data = await this.staffUserService.updateStaffUserProfile(
-        staffUserCode,
-        dto
-      );
+      res.data = await this.staffUserService.updateProfile(staffUserCode, dto);
       res.success = true;
       res.message = `User ${UPDATE_SUCCESS}`;
       return res;
@@ -104,18 +99,15 @@ export class StaffUserController {
     }
   }
 
-  @Put("/updateStaffUser/:staffUserCode")
+  @Put("/:staffUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async updateStaffUser(
-    @Param("userstaffUserCodeCode") staffUserCode: string,
+  async update(
+    @Param("staffUserCode") staffUserCode: string,
     @Body() dto: UpdateStaffUserDto
   ) {
     const res: ApiResponseModel<StaffUser> = {} as any;
     try {
-      res.data = await this.staffUserService.updateStaffUser(
-        staffUserCode,
-        dto
-      );
+      res.data = await this.staffUserService.update(staffUserCode, dto);
       res.success = true;
       res.message = `User ${UPDATE_SUCCESS}`;
       return res;
@@ -128,10 +120,10 @@ export class StaffUserController {
 
   @Delete("/:staffUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async deleteUser(@Param("staffUserCode") staffUserCode: string) {
+  async delete(@Param("staffUserCode") staffUserCode: string) {
     const res: ApiResponseModel<StaffUser> = {} as any;
     try {
-      res.data = await this.staffUserService.deleteUser(staffUserCode);
+      res.data = await this.staffUserService.delete(staffUserCode);
       res.success = true;
       res.message = `User ${DELETE_SUCCESS}`;
       return res;

@@ -26,7 +26,7 @@ export class ProductImageController {
 
   @Get("/:productImageId")
   //   @UseGuards(JwtAuthGuard)
-  async getDetails(@Param("productImageId") productImageId: string) {
+  async getById(@Param("productImageId") productImageId: string) {
     const res = {} as ApiResponseModel<ProductImage>;
     try {
       res.data = await this.collectionService.getById(productImageId);
@@ -41,7 +41,7 @@ export class ProductImageController {
 
   @Post("/page")
   //   @UseGuards(JwtAuthGuard)
-  async getPaginated(@Body() params: PaginationParamsDto) {
+  async getPagination(@Body() params: PaginationParamsDto) {
     const res: ApiResponseModel<{
       results: ProductImage[];
       total: number;
@@ -59,12 +59,12 @@ export class ProductImageController {
 
   @Post("")
   //   @UseGuards(JwtAuthGuard)
-  async addProduct(@Body() accessDto: CreateProductImageDto) {
+  async add(@Body() accessDto: CreateProductImageDto) {
     const res: ApiResponseModel<ProductImage> = {} as any;
     try {
       res.data = await this.collectionService.create(accessDto);
       res.success = true;
-      res.message = `Product Collection ${SAVING_SUCCESS}`;
+      res.message = `Product image ${SAVING_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;
@@ -80,7 +80,7 @@ export class ProductImageController {
     try {
       res.data = await this.collectionService.delete(collectionId);
       res.success = true;
-      res.message = `Product Collection ${DELETE_SUCCESS}`;
+      res.message = `Product image ${DELETE_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;

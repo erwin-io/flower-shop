@@ -7,13 +7,13 @@ import { StaffUserService } from "src/services/staff-user.service";
 export declare class StaffUserController {
     private readonly staffUserService;
     constructor(staffUserService: StaffUserService);
-    getStaffUserByCode(staffUserCode: string): Promise<ApiResponseModel<StaffUser>>;
-    getStaffUserPagination(paginationParams: PaginationParamsDto): Promise<ApiResponseModel<{
+    getByCode(staffUserCode: string): Promise<ApiResponseModel<StaffUser>>;
+    getPagination(paginationParams: PaginationParamsDto): Promise<ApiResponseModel<{
         results: StaffUser[];
         total: number;
     }>>;
-    createClientUser(dto: CreateStaffUserDto): Promise<ApiResponseModel<StaffUser>>;
-    updateStaffUserProfile(staffUserCode: string, dto: UpdateStaffUserProfileDto): Promise<ApiResponseModel<StaffUser>>;
-    updateStaffUser(staffUserCode: string, dto: UpdateStaffUserDto): Promise<ApiResponseModel<StaffUser>>;
-    deleteUser(staffUserCode: string): Promise<ApiResponseModel<StaffUser>>;
+    create(dto: CreateStaffUserDto): Promise<ApiResponseModel<StaffUser>>;
+    updateProfile(staffUserCode: string, dto: UpdateStaffUserProfileDto): Promise<ApiResponseModel<StaffUser>>;
+    update(staffUserCode: string, dto: UpdateStaffUserDto): Promise<ApiResponseModel<StaffUser>>;
+    delete(staffUserCode: string): Promise<ApiResponseModel<StaffUser>>;
 }

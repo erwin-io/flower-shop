@@ -16,18 +16,18 @@ exports.StaffUserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const staff_access_constant_1 = require("../common/constant/staff-access.constant");
-const user_error_constant_1 = require("../common/constant/user-error.constant");
 const utils_1 = require("../common/utils/utils");
 const firebase_provider_1 = require("../core/provider/firebase/firebase-provider");
 const StaffAccess_1 = require("../db/entities/StaffAccess");
 const StaffUser_1 = require("../db/entities/StaffUser");
 const typeorm_2 = require("typeorm");
+const staff_user_error_constant_1 = require("../common/constant/staff-user-error.constant");
 let StaffUserService = class StaffUserService {
     constructor(firebaseProvoder, staffUserRepo) {
         this.firebaseProvoder = firebaseProvoder;
         this.staffUserRepo = staffUserRepo;
     }
-    async getStaffUserPagination({ pageSize, pageIndex, order, columnDef }) {
+    async getPagination({ pageSize, pageIndex, order, columnDef }) {
         const skip = Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
         const take = Number(pageSize);
         const condition = (0, utils_1.columnDefToTypeORMCondition)(columnDef);
@@ -51,55 +51,68 @@ let StaffUserService = class StaffUserService {
             total,
         };
     }
-    async getStaffUserByCode(staffUserCode) {
+    async getByCode(staffUserCode) {
         const res = await this.staffUserRepo.findOne({
             where: {
                 staffUserCode,
                 active: true,
             },
-            relations: {},
+            relations: {
+                staffAccess: true,
+            },
         });
         if (!res) {
-            throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+            throw Error(staff_user_error_constant_1.STAFF_USER_ERROR_USER_NOT_FOUND);
         }
         if (res.password)
             delete res.password;
         return res;
     }
-    async createStaffUsers(dto) {
+    async create(dto) {
         return await this.staffUserRepo.manager.transaction(async (entityManager) => {
             var _a;
-            let staffUser = new StaffUser_1.StaffUser();
-            staffUser.userName = dto.userName;
-            staffUser.password = await (0, utils_1.hash)(dto.password);
-            staffUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
-            if (dto.staffAccessCode) {
-                const access = await entityManager.findOne(StaffAccess_1.StaffAccess, {
+            try {
+                let staffUser = new StaffUser_1.StaffUser();
+                staffUser.userName = dto.userName;
+                staffUser.password = await (0, utils_1.hash)(dto.password);
+                staffUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
+                if (dto.staffAccessCode) {
+                    const access = await entityManager.findOne(StaffAccess_1.StaffAccess, {
+                        where: {
+                            staffAccessCode: dto.staffAccessCode,
+                            active: true,
+                        },
+                    });
+                    if (!access) {
+                        throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
+                    }
+                    staffUser.staffAccess = access;
+                }
+                staffUser.accessGranted = true;
+                staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
+                staffUser.staffUserCode = (0, utils_1.generateIndentityCode)(staffUser.staffUserId);
+                staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
+                staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
                     where: {
-                        staffAccessCode: dto.staffAccessCode,
+                        staffUserCode: staffUser.staffUserCode,
                         active: true,
                     },
+                    relations: {},
                 });
-                if (!access) {
-                    throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
-                }
-                staffUser.staffAccess = access;
+                delete staffUser.password;
+                return staffUser;
             }
-            staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
-            staffUser.staffUserCode = (0, utils_1.generateIndentityCode)(staffUser.staffUserId);
-            staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
-            staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
-                where: {
-                    staffUserCode: staffUser.staffUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            delete staffUser.password;
-            return staffUser;
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(staff_user_error_constant_1.STAFF_USER_ERROR_USER_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
-    async updateStaffUserProfile(staffUserCode, dto) {
+    async updateProfile(staffUserCode, dto) {
         return await this.staffUserRepo.manager.transaction(async (entityManager) => {
             var _a;
             let staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
@@ -110,8 +123,9 @@ let StaffUserService = class StaffUserService {
                 relations: {},
             });
             if (!staffUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+                throw Error(staff_user_error_constant_1.STAFF_USER_ERROR_USER_NOT_FOUND);
             }
+            staffUser.accessGranted = true;
             staffUser.name = (_a = dto.name) !== null && _a !== void 0 ? _a : "";
             staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
             staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
@@ -125,44 +139,55 @@ let StaffUserService = class StaffUserService {
             return staffUser;
         });
     }
-    async updateStaffUser(staffUserCode, dto) {
+    async update(staffUserCode, dto) {
         return await this.staffUserRepo.manager.transaction(async (entityManager) => {
-            let staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
-                where: {
-                    staffUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            if (!staffUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
-            }
-            staffUser.name = dto.name;
-            if (dto.staffAccessCode) {
-                const staffAccess = await entityManager.findOne(StaffAccess_1.StaffAccess, {
+            try {
+                let staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
                     where: {
-                        staffAccessCode: dto.staffAccessCode,
+                        staffUserCode,
                         active: true,
                     },
+                    relations: {},
                 });
-                if (!staffAccess) {
-                    throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
+                if (!staffUser) {
+                    throw Error(staff_user_error_constant_1.STAFF_USER_ERROR_USER_NOT_FOUND);
                 }
-                staffUser.staffAccess = staffAccess;
+                staffUser.name = dto.name;
+                if (dto.staffAccessCode) {
+                    const staffAccess = await entityManager.findOne(StaffAccess_1.StaffAccess, {
+                        where: {
+                            staffAccessCode: dto.staffAccessCode,
+                            active: true,
+                        },
+                    });
+                    if (!staffAccess) {
+                        throw Error(staff_access_constant_1.STAFF_ACCESS_ERROR_NOT_FOUND);
+                    }
+                    staffUser.staffAccess = staffAccess;
+                }
+                staffUser.accessGranted = true;
+                staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
+                staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
+                    where: {
+                        staffUserCode,
+                        active: true,
+                    },
+                    relations: {},
+                });
+                delete staffUser.password;
+                return staffUser;
             }
-            staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);
-            staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
-                where: {
-                    staffUserCode,
-                    active: true,
-                },
-                relations: {},
-            });
-            delete staffUser.password;
-            return staffUser;
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw new common_1.HttpException(staff_user_error_constant_1.STAFF_USER_ERROR_USER_DUPLICATE, common_1.HttpStatus.BAD_REQUEST);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
-    async deleteUser(staffUserCode) {
+    async delete(staffUserCode) {
         return await this.staffUserRepo.manager.transaction(async (entityManager) => {
             let staffUser = await entityManager.findOne(StaffUser_1.StaffUser, {
                 where: {
@@ -172,7 +197,7 @@ let StaffUserService = class StaffUserService {
                 relations: {},
             });
             if (!staffUser) {
-                throw Error(user_error_constant_1.USER_ERROR_USER_NOT_FOUND);
+                throw Error(staff_user_error_constant_1.STAFF_USER_ERROR_USER_NOT_FOUND);
             }
             staffUser.active = false;
             staffUser = await entityManager.save(StaffUser_1.StaffUser, staffUser);

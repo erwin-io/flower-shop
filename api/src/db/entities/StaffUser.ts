@@ -8,6 +8,9 @@ import {
 } from "typeorm";
 import { StaffAccess } from "./StaffAccess";
 
+@Index("StaffUser_UserName_Active_idx", ["active", "userName"], {
+  unique: true,
+})
 @Index("StaffUser_pkey", ["staffUserId"], { unique: true })
 @Entity("StaffUser", { schema: "dbo" })
 export class StaffUser {

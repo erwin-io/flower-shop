@@ -4,6 +4,7 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsBooleanString,
+  IsIn,
   IsNotEmpty,
   IsNumberString,
   IsOptional,
@@ -14,7 +15,7 @@ export class DefaultProductDto {
   @ApiProperty()
   @IsNotEmpty()
   name: string;
-  
+
   @ApiProperty()
   @IsNotEmpty()
   shortDesc: string;
@@ -22,20 +23,30 @@ export class DefaultProductDto {
   @ApiProperty()
   @IsNotEmpty()
   longDesc: string;
-  
-  @ApiProperty()
-  @IsNotEmpty()
-  price: string;
-  
-  @ApiProperty()
-  @IsNotEmpty()
-  discountPrice: string;
-  
-  @ApiProperty()
-  @IsNotEmpty()
-  size: string;
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsNumberString()
+  price: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumberString()
+  discountPrice: string;
+
+  @ApiProperty({
+    description: "Size value, must be 1, 2, or 3",
+    enum: [1, 2, 3], // This adds documentation for Swagger
+    example: 1, // Example value for Swagger
+  })
+  @IsNotEmpty()
+  @IsIn([1, 2, 3], {
+    message: "Size must be one of the following values: 1, 2, or 3",
+  })
+  size: number; // Use `number` if the size is numeric
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumberString()
   categoryId: string;
 }

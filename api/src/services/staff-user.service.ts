@@ -1,9 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { extname } from "path";
 import { LOGIN_ERROR_PASSWORD_INCORRECT } from "src/common/constant/auth-error.constant";
 import { STAFF_ACCESS_ERROR_NOT_FOUND } from "src/common/constant/staff-access.constant";
-import { USER_ERROR_USER_NOT_FOUND } from "src/common/constant/user-error.constant";
 import {
   columnDefToTypeORMCondition,
   hash,
@@ -24,6 +23,10 @@ import { FirebaseProvider } from "src/core/provider/firebase/firebase-provider";
 import { StaffAccess } from "src/db/entities/StaffAccess";
 import { StaffUser } from "src/db/entities/StaffUser";
 import { Repository, In } from "typeorm";
+import {
+  STAFF_USER_ERROR_USER_DUPLICATE,
+  STAFF_USER_ERROR_USER_NOT_FOUND,
+} from "src/common/constant/staff-user-error.constant";
 
 @Injectable()
 export class StaffUserService {
@@ -33,7 +36,7 @@ export class StaffUserService {
     private readonly staffUserRepo: Repository<StaffUser>
   ) {}
 
-  async getStaffUserPagination({ pageSize, pageIndex, order, columnDef }) {
+  async getPagination({ pageSize, pageIndex, order, columnDef }) {
     const skip =
       Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
     const take = Number(pageSize);
@@ -65,60 +68,76 @@ export class StaffUserService {
     };
   }
 
-  async getStaffUserByCode(staffUserCode) {
+  async getByCode(staffUserCode) {
     const res = await this.staffUserRepo.findOne({
       where: {
         staffUserCode,
         active: true,
       },
-      relations: {},
+      relations: {
+        staffAccess: true,
+      },
     });
 
     if (!res) {
-      throw Error(USER_ERROR_USER_NOT_FOUND);
+      throw Error(STAFF_USER_ERROR_USER_NOT_FOUND);
     }
     if (res.password) delete res.password;
     return res;
   }
 
-  async createStaffUsers(dto: CreateStaffUserDto) {
+  async create(dto: CreateStaffUserDto) {
     return await this.staffUserRepo.manager.transaction(
       async (entityManager) => {
-        let staffUser = new StaffUser();
-        staffUser.userName = dto.userName;
-        staffUser.password = await hash(dto.password);
+        try {
+          let staffUser = new StaffUser();
+          staffUser.userName = dto.userName;
+          staffUser.password = await hash(dto.password);
 
-        staffUser.name = dto.name ?? "";
-        if (dto.staffAccessCode) {
-          const access = await entityManager.findOne(StaffAccess, {
+          staffUser.name = dto.name ?? "";
+          if (dto.staffAccessCode) {
+            const access = await entityManager.findOne(StaffAccess, {
+              where: {
+                staffAccessCode: dto.staffAccessCode,
+                active: true,
+              },
+            });
+
+            if (!access) {
+              throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+            }
+            staffUser.staffAccess = access;
+          }
+          staffUser.accessGranted = true;
+          staffUser = await entityManager.save(StaffUser, staffUser);
+          staffUser.staffUserCode = generateIndentityCode(
+            staffUser.staffUserId
+          );
+          staffUser = await entityManager.save(StaffUser, staffUser);
+          staffUser = await entityManager.findOne(StaffUser, {
             where: {
-              staffAccessCode: dto.staffAccessCode,
+              staffUserCode: staffUser.staffUserCode,
               active: true,
             },
+            relations: {},
           });
-
-          if (!access) {
-            throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+          delete staffUser.password;
+          return staffUser;
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw new HttpException(
+              STAFF_USER_ERROR_USER_DUPLICATE,
+              HttpStatus.BAD_REQUEST
+            );
+          } else {
+            throw ex;
           }
-          staffUser.staffAccess = access;
         }
-        staffUser = await entityManager.save(StaffUser, staffUser);
-        staffUser.staffUserCode = generateIndentityCode(staffUser.staffUserId);
-        staffUser = await entityManager.save(StaffUser, staffUser);
-        staffUser = await entityManager.findOne(StaffUser, {
-          where: {
-            staffUserCode: staffUser.staffUserCode,
-            active: true,
-          },
-          relations: {},
-        });
-        delete staffUser.password;
-        return staffUser;
       }
     );
   }
 
-  async updateStaffUserProfile(staffUserCode, dto: UpdateStaffUserProfileDto) {
+  async updateProfile(staffUserCode, dto: UpdateStaffUserProfileDto) {
     return await this.staffUserRepo.manager.transaction(
       async (entityManager) => {
         let staffUser = await entityManager.findOne(StaffUser, {
@@ -130,9 +149,10 @@ export class StaffUserService {
         });
 
         if (!staffUser) {
-          throw Error(USER_ERROR_USER_NOT_FOUND);
+          throw Error(STAFF_USER_ERROR_USER_NOT_FOUND);
         }
 
+        staffUser.accessGranted = true;
         staffUser.name = dto.name ?? "";
         staffUser = await entityManager.save(StaffUser, staffUser);
 
@@ -149,50 +169,62 @@ export class StaffUserService {
     );
   }
 
-  async updateStaffUser(staffUserCode, dto: UpdateStaffUserDto) {
+  async update(staffUserCode, dto: UpdateStaffUserDto) {
     return await this.staffUserRepo.manager.transaction(
       async (entityManager) => {
-        let staffUser = await entityManager.findOne(StaffUser, {
-          where: {
-            staffUserCode,
-            active: true,
-          },
-          relations: {},
-        });
-
-        if (!staffUser) {
-          throw Error(USER_ERROR_USER_NOT_FOUND);
-        }
-
-        staffUser.name = dto.name;
-        if (dto.staffAccessCode) {
-          const staffAccess = await entityManager.findOne(StaffAccess, {
+        try {
+          let staffUser = await entityManager.findOne(StaffUser, {
             where: {
-              staffAccessCode: dto.staffAccessCode,
+              staffUserCode,
               active: true,
             },
+            relations: {},
           });
 
-          if (!staffAccess) {
-            throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+          if (!staffUser) {
+            throw Error(STAFF_USER_ERROR_USER_NOT_FOUND);
           }
-          staffUser.staffAccess = staffAccess;
+
+          staffUser.name = dto.name;
+          if (dto.staffAccessCode) {
+            const staffAccess = await entityManager.findOne(StaffAccess, {
+              where: {
+                staffAccessCode: dto.staffAccessCode,
+                active: true,
+              },
+            });
+
+            if (!staffAccess) {
+              throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+            }
+            staffUser.staffAccess = staffAccess;
+          }
+          staffUser.accessGranted = true;
+          staffUser = await entityManager.save(StaffUser, staffUser);
+          staffUser = await entityManager.findOne(StaffUser, {
+            where: {
+              staffUserCode,
+              active: true,
+            },
+            relations: {},
+          });
+          delete staffUser.password;
+          return staffUser;
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw new HttpException(
+              STAFF_USER_ERROR_USER_DUPLICATE,
+              HttpStatus.BAD_REQUEST
+            );
+          } else {
+            throw ex;
+          }
         }
-        staffUser = await entityManager.save(StaffUser, staffUser);
-        staffUser = await entityManager.findOne(StaffUser, {
-          where: {
-            staffUserCode,
-            active: true,
-          },
-          relations: {},
-        });
-        delete staffUser.password;
-        return staffUser;
       }
     );
   }
 
-  async deleteUser(staffUserCode) {
+  async delete(staffUserCode) {
     return await this.staffUserRepo.manager.transaction(
       async (entityManager) => {
         let staffUser = await entityManager.findOne(StaffUser, {
@@ -204,7 +236,7 @@ export class StaffUserService {
         });
 
         if (!staffUser) {
-          throw Error(USER_ERROR_USER_NOT_FOUND);
+          throw Error(STAFF_USER_ERROR_USER_NOT_FOUND);
         }
 
         staffUser.active = false;

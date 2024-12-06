@@ -40,7 +40,7 @@ let StaffAccessController = class StaffAccessController {
     async getPaginated(params) {
         const res = {};
         try {
-            res.data = await this.staffAccessService.getStaffAccessPagination(params);
+            res.data = await this.staffAccessService.getPagination(params);
             res.success = true;
             return res;
         }
@@ -130,8 +130,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], StaffAccessController.prototype, "delete", null);
 StaffAccessController = __decorate([
-    (0, swagger_1.ApiTags)("access"),
-    (0, common_1.Controller)("access"),
+    (0, swagger_1.ApiTags)("staff-access"),
+    (0, common_1.Controller)("staff-access"),
     __metadata("design:paramtypes", [staff_access_service_1.StaffAccessService])
 ], StaffAccessController);
 exports.StaffAccessController = StaffAccessController;

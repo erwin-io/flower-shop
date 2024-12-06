@@ -1,5 +1,6 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
+@Index("CustomerUser_Active_Email_idx", ["active", "email"], { unique: true })
 @Index("CustomerUser_pkey", ["customerUserId"], { unique: true })
 @Entity("CustomerUser", { schema: "dbo" })
 export class CustomerUser {
@@ -24,6 +25,6 @@ export class CustomerUser {
   @Column("boolean", { name: "IsVerifiedUser", default: () => "false" })
   isVerifiedUser: boolean;
 
-  @Column("boolean", { name: "Active ", default: () => "true" })
+  @Column("boolean", { name: "Active", default: () => "true" })
   active: boolean;
 }

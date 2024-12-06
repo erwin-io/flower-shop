@@ -1,0 +1,47 @@
+{
+  "apiEndPoints": {
+    "auth": {
+      "login": "/auth/login/staff"
+    },
+    "staffUser": {
+      "getByCode": "/staff-user/",
+      "create": "/staff-user/",
+      "updateProfile": "/staff-user/updateProfile/",
+      "update": "/staff-user/",
+      "getAdvanceSearch": "/staff-user/page/",
+      "delete": "/staff-user/"
+    },
+    "staffAccess": {
+      "getByAdvanceSearch": "/staff-access/page/",
+      "getByCode": "/staff-access/",
+      "create": "/staff-access/",
+      "update": "/staff-access/",
+      "delete": "/staff-access/"
+    },
+    "customerUser": {
+      "getByCode": "/customer-user/",
+      "updateProfile": "/customer-user/updateProfile/",
+      "update": "/customer-user/",
+      "getAdvanceSearch": "/customer-user/page/",
+      "delete": "/customer-user/"
+    },
+    "category": {
+      "getByCode": "/category/",
+      "create": "/category/",
+      "update": "/category/",
+      "getAdvanceSearch": "/category/page/",
+      "delete": "/category/"
+    },
+    "product": {
+      "getByCode": "/product/",
+      "create": "/product/",
+      "update": "/product/",
+      "getAdvanceSearch": "/product/page/",
+      "delete": "/product/"
+    },
+    "notifications": {
+    },
+    "dashboard": {
+    }
+  }
+}

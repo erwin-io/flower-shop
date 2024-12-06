@@ -8,7 +8,7 @@ export declare class ProductController {
     private readonly productService;
     constructor(productService: ProductService);
     getDetails(sku: string): Promise<ApiResponseModel<Product>>;
-    getPaginated(params: PaginationParamsDto): Promise<ApiResponseModel<{
+    getPagination(params: PaginationParamsDto): Promise<ApiResponseModel<{
         results: Product[];
         total: number;
     }>>;

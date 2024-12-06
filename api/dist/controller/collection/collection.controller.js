@@ -24,7 +24,7 @@ let CollectionController = class CollectionController {
     constructor(collectionService) {
         this.collectionService = collectionService;
     }
-    async getDetails(collectionId) {
+    async getById(collectionId) {
         const res = {};
         try {
             res.data = await this.collectionService.getById(collectionId);
@@ -37,10 +37,10 @@ let CollectionController = class CollectionController {
             return res;
         }
     }
-    async getPaginated(params) {
+    async getPagination(params) {
         const res = {};
         try {
-            res.data = await this.collectionService.getCollectionPagination(params);
+            res.data = await this.collectionService.getPagination(params);
             res.success = true;
             return res;
         }
@@ -50,7 +50,7 @@ let CollectionController = class CollectionController {
             return res;
         }
     }
-    async addProduct(accessDto) {
+    async create(accessDto) {
         const res = {};
         try {
             res.data = await this.collectionService.create(accessDto);
@@ -99,21 +99,21 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], CollectionController.prototype, "getDetails", null);
+], CollectionController.prototype, "getById", null);
 __decorate([
     (0, common_1.Post)("/page"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], CollectionController.prototype, "getPaginated", null);
+], CollectionController.prototype, "getPagination", null);
 __decorate([
-    (0, common_1.Post)("addProduct"),
+    (0, common_1.Post)(""),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [collection_create_dto_1.CreateCollectionDto]),
     __metadata("design:returntype", Promise)
-], CollectionController.prototype, "addProduct", null);
+], CollectionController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)("/:collectionId"),
     __param(0, (0, common_1.Param)("collectionId")),

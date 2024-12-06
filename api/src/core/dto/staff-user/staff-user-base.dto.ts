@@ -28,11 +28,8 @@ export class DefaultStaffUserDto {
   name: string;
 
   @ApiProperty()
-  @IsEmail({
-    message: "Not allowed, invalid email format",
-  })
   @IsNotEmpty({
-    message: "Not allowed, email is required!"
+    message: "Not allowed, username is required!"
   })
   userName: string;
 }

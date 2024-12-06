@@ -7,7 +7,7 @@ export declare class StaffUserService {
     private firebaseProvoder;
     private readonly staffUserRepo;
     constructor(firebaseProvoder: FirebaseProvider, staffUserRepo: Repository<StaffUser>);
-    getStaffUserPagination({ pageSize, pageIndex, order, columnDef }: {
+    getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;
         order: any;
@@ -16,9 +16,9 @@ export declare class StaffUserService {
         results: StaffUser[];
         total: number;
     }>;
-    getStaffUserByCode(staffUserCode: any): Promise<StaffUser>;
-    createStaffUsers(dto: CreateStaffUserDto): Promise<StaffUser>;
-    updateStaffUserProfile(staffUserCode: any, dto: UpdateStaffUserProfileDto): Promise<StaffUser>;
-    updateStaffUser(staffUserCode: any, dto: UpdateStaffUserDto): Promise<StaffUser>;
-    deleteUser(staffUserCode: any): Promise<StaffUser>;
+    getByCode(staffUserCode: any): Promise<StaffUser>;
+    create(dto: CreateStaffUserDto): Promise<StaffUser>;
+    updateProfile(staffUserCode: any, dto: UpdateStaffUserProfileDto): Promise<StaffUser>;
+    update(staffUserCode: any, dto: UpdateStaffUserDto): Promise<StaffUser>;
+    delete(staffUserCode: any): Promise<StaffUser>;
 }

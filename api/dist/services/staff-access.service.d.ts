@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 export declare class StaffAccessService {
     private readonly staffAccessRepo;
     constructor(staffAccessRepo: Repository<StaffAccess>);
-    getStaffAccessPagination({ pageSize, pageIndex, order, columnDef }: {
+    getPagination({ pageSize, pageIndex, order, columnDef }: {
         pageSize: any;
         pageIndex: any;
         order: any;

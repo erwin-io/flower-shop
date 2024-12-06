@@ -31,11 +31,8 @@ __decorate([
 ], DefaultStaffUserDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsEmail)({
-        message: "Not allowed, invalid email format",
-    }),
     (0, class_validator_1.IsNotEmpty)({
-        message: "Not allowed, email is required!"
+        message: "Not allowed, username is required!"
     }),
     __metadata("design:type", String)
 ], DefaultStaffUserDto.prototype, "userName", void 0);

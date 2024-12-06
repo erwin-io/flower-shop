@@ -35,14 +35,10 @@ export class CustomerUserController {
 
   @Get("/:customerUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async getCustomerUserByCode(
-    @Param("customerUserCode") customerUserCode: string
-  ) {
+  async getByCode(@Param("customerUserCode") customerUserCode: string) {
     const res = {} as ApiResponseModel<CustomerUser>;
     try {
-      res.data = await this.customerUserService.getCustomerUserByCode(
-        customerUserCode
-      );
+      res.data = await this.customerUserService.getByCode(customerUserCode);
       res.success = true;
       return res;
     } catch (e) {
@@ -54,15 +50,11 @@ export class CustomerUserController {
 
   @Post("/page")
   //   @UseGuards(JwtAuthGuard)
-  async getCustomerUserPagination(
-    @Body() paginationParams: PaginationParamsDto
-  ) {
+  async getPagination(@Body() paginationParams: PaginationParamsDto) {
     const res: ApiResponseModel<{ results: CustomerUser[]; total: number }> =
       {} as any;
     try {
-      res.data = await this.customerUserService.getCustomerUserPagination(
-        paginationParams
-      );
+      res.data = await this.customerUserService.getPagination(paginationParams);
       res.success = true;
       return res;
     } catch (e) {
@@ -72,14 +64,14 @@ export class CustomerUserController {
     }
   }
 
-  @Post("/createCustomerUser")
+  @Post("")
   //   @UseGuards(JwtAuthGuard)
-  async createCustomerUser(@Body() dto: CreateCustomerUserDto) {
+  async create(@Body() dto: CreateCustomerUserDto) {
     const res: ApiResponseModel<CustomerUser> = {} as any;
     try {
-      res.data = await this.customerUserService.createCustomerUser(dto);
+      res.data = await this.customerUserService.create(dto);
       res.success = true;
-      res.message = `User  ${SAVING_SUCCESS}`;
+      res.message = `Customer user ${SAVING_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;
@@ -88,20 +80,20 @@ export class CustomerUserController {
     }
   }
 
-  @Put("/updateCustomerUserProfile/:customerUserCode")
+  @Put("/updateProfile/:customerUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async updateCustomerUserProfile(
+  async updateProfile(
     @Param("customerUserCode") customerUserCode: string,
     @Body() dto: UpdateCustomerUserProfileDto
   ) {
     const res: ApiResponseModel<CustomerUser> = {} as any;
     try {
-      res.data = await this.customerUserService.updateCustomerUserProfile(
+      res.data = await this.customerUserService.updateProfile(
         customerUserCode,
         dto
       );
       res.success = true;
-      res.message = `User ${UPDATE_SUCCESS}`;
+      res.message = `Customer user ${UPDATE_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;
@@ -110,20 +102,17 @@ export class CustomerUserController {
     }
   }
 
-  @Put("/updateCustomertUser/:customerUserCode")
+  @Put("/:customerUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async updateCustomertUser(
+  async update(
     @Param("usercustomerUserCodeCode") customerUserCode: string,
     @Body() dto: UpdateCustomerUserDto
   ) {
     const res: ApiResponseModel<CustomerUser> = {} as any;
     try {
-      res.data = await this.customerUserService.updateCustomertUser(
-        customerUserCode,
-        dto
-      );
+      res.data = await this.customerUserService.update(customerUserCode, dto);
       res.success = true;
-      res.message = `User ${UPDATE_SUCCESS}`;
+      res.message = `Customer user ${UPDATE_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;
@@ -134,12 +123,12 @@ export class CustomerUserController {
 
   @Delete("/:customerUserCode")
   //   @UseGuards(JwtAuthGuard)
-  async deleteUser(@Param("customerUserCode") customerUserCode: string) {
+  async delete(@Param("customerUserCode") customerUserCode: string) {
     const res: ApiResponseModel<CustomerUser> = {} as any;
     try {
-      res.data = await this.customerUserService.deleteUser(customerUserCode);
+      res.data = await this.customerUserService.delete(customerUserCode);
       res.success = true;
-      res.message = `User ${DELETE_SUCCESS}`;
+      res.message = `Customer user ${DELETE_SUCCESS}`;
       return res;
     } catch (e) {
       res.success = false;

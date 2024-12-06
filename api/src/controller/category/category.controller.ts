@@ -46,7 +46,7 @@ export class CategoryController {
     const res: ApiResponseModel<{ results: Category[]; total: number }> =
       {} as any;
     try {
-      res.data = await this.categoryService.getCategoryPagination(params);
+      res.data = (await this.categoryService.getPagination(params)) as any;
       res.success = true;
       return res;
     } catch (e) {

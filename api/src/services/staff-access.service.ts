@@ -1,6 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { STAFF_ACCESS_ERROR_NOT_FOUND } from "src/common/constant/staff-access.constant";
+import {
+  STAFF_ACCESS_ERROR_DUPLICATE,
+  STAFF_ACCESS_ERROR_NOT_FOUND,
+} from "src/common/constant/staff-access.constant";
 import {
   columnDefToTypeORMCondition,
   generateIndentityCode,
@@ -17,7 +20,7 @@ export class StaffAccessService {
     private readonly staffAccessRepo: Repository<StaffAccess>
   ) {}
 
-  async getStaffAccessPagination({ pageSize, pageIndex, order, columnDef }) {
+  async getPagination({ pageSize, pageIndex, order, columnDef }) {
     const skip =
       Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
     const take = Number(pageSize);
@@ -49,8 +52,10 @@ export class StaffAccessService {
   async getByCode(staffAccessCode) {
     const result = await this.staffAccessRepo.findOne({
       select: {
+        staffAccessId: true,
+        staffAccessCode: true,
         name: true,
-        staffAccessPages: true,
+        accessPages: true,
       } as any,
       where: {
         staffAccessCode,
@@ -66,14 +71,25 @@ export class StaffAccessService {
   async create(dto: CreateStaffAccessDto) {
     return await this.staffAccessRepo.manager.transaction(
       async (entityManager) => {
-        let staffAccess = new StaffAccess();
-        staffAccess.name = dto.name;
-        staffAccess.accessPages = dto.accessPages;
-        staffAccess = await entityManager.save(staffAccess);
-        staffAccess.staffAccessCode = generateIndentityCode(
-          staffAccess.staffAccessId
-        );
-        return await entityManager.save(StaffAccess, staffAccess);
+        try {
+          let staffAccess = new StaffAccess();
+          staffAccess.name = dto.name;
+          staffAccess.accessPages = dto.accessPages;
+          staffAccess = await entityManager.save(staffAccess);
+          staffAccess.staffAccessCode = generateIndentityCode(
+            staffAccess.staffAccessId
+          );
+          return await entityManager.save(StaffAccess, staffAccess);
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw new HttpException(
+              STAFF_ACCESS_ERROR_DUPLICATE,
+              HttpStatus.BAD_REQUEST
+            );
+          } else {
+            throw ex;
+          }
+        }
       }
     );
   }
@@ -81,18 +97,29 @@ export class StaffAccessService {
   async update(staffAccessCode, dto: UpdateStaffAccessDto) {
     return await this.staffAccessRepo.manager.transaction(
       async (entityManager) => {
-        const staffAccess = await entityManager.findOne(StaffAccess, {
-          where: {
-            staffAccessCode,
-            active: true,
-          },
-        });
-        if (!staffAccess) {
-          throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+        try {
+          const staffAccess = await entityManager.findOne(StaffAccess, {
+            where: {
+              staffAccessCode,
+              active: true,
+            },
+          });
+          if (!staffAccess) {
+            throw Error(STAFF_ACCESS_ERROR_NOT_FOUND);
+          }
+          staffAccess.name = dto.name;
+          staffAccess.accessPages = dto.accessPages;
+          return await entityManager.save(StaffAccess, staffAccess);
+        } catch (ex) {
+          if (ex.message.includes("duplicate")) {
+            throw new HttpException(
+              STAFF_ACCESS_ERROR_DUPLICATE,
+              HttpStatus.BAD_REQUEST
+            );
+          } else {
+            throw ex;
+          }
         }
-        staffAccess.name = dto.name;
-        staffAccess.accessPages = dto.accessPages;
-        return await entityManager.save(StaffAccess, staffAccess);
       }
     );
   }

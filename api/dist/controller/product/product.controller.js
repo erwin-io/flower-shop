@@ -37,10 +37,10 @@ let ProductController = class ProductController {
             return res;
         }
     }
-    async getPaginated(params) {
+    async getPagination(params) {
         const res = {};
         try {
-            res.data = await this.productService.getProductPagination(params);
+            res.data = await this.productService.getPagination(params);
             res.success = true;
             return res;
         }
@@ -106,7 +106,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [pagination_params_dto_1.PaginationParamsDto]),
     __metadata("design:returntype", Promise)
-], ProductController.prototype, "getPaginated", null);
+], ProductController.prototype, "getPagination", null);
 __decorate([
     (0, common_1.Post)(""),
     __param(0, (0, common_1.Body)()),

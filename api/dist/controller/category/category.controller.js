@@ -40,7 +40,7 @@ let CategoryController = class CategoryController {
     async getPaginated(params) {
         const res = {};
         try {
-            res.data = await this.categoryService.getCategoryPagination(params);
+            res.data = (await this.categoryService.getPagination(params));
             res.success = true;
             return res;
         }

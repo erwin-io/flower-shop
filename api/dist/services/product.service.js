@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const category_constant_1 = require("../common/constant/category.constant");
 const product_constant_1 = require("../common/constant/product.constant");
 const utils_1 = require("../common/utils/utils");
 const Category_1 = require("../db/entities/Category");
@@ -24,7 +25,7 @@ let ProductService = class ProductService {
     constructor(productRepo) {
         this.productRepo = productRepo;
     }
-    async getProductPagination({ pageSize, pageIndex, order, columnDef }) {
+    async getPagination({ pageSize, pageIndex, order, columnDef }) {
         const skip = Number(pageIndex) > 0 ? Number(pageIndex) * Number(pageSize) : 0;
         const take = Number(pageSize);
         const condition = (0, utils_1.columnDefToTypeORMCondition)(columnDef);
@@ -36,7 +37,7 @@ let ProductService = class ProductService {
                         file: true,
                     },
                     category: {
-                        thumbnailFile: true
+                        thumbnailFile: true,
                     },
                 },
                 skip,
@@ -63,9 +64,9 @@ let ProductService = class ProductService {
                     file: true,
                 },
                 category: {
-                    thumbnailFile: true
+                    thumbnailFile: true,
                 },
-            }
+            },
         });
         if (!result) {
             throw Error(product_constant_1.PRODUCT_ERROR_NOT_FOUND);
@@ -74,72 +75,95 @@ let ProductService = class ProductService {
     }
     async create(dto) {
         return await this.productRepo.manager.transaction(async (entityManager) => {
-            let product = new Product_1.Product();
-            product.name = dto.name;
-            product.shortDesc = dto.shortDesc;
-            product.longDesc = dto.longDesc;
-            product.price = dto.price;
-            product.discountPrice = dto.discountPrice;
-            product.size = dto.size;
-            const category = await entityManager.findOneBy(Category_1.Category, {
-                categoryId: dto.categoryId,
-            });
-            product.category = category;
-            product = await entityManager.save(Product_1.Product, product);
-            product.sku = `P${(0, utils_1.generateIndentityCode)(product.productId)}`;
-            product = await entityManager.save(Product_1.Product, product);
-            product = await entityManager.findOne(Product_1.Product, {
-                where: {
-                    productId: product.productId,
-                },
-                relations: {
-                    productImages: {
-                        file: true,
-                    },
-                    category: {
-                        thumbnailFile: true
-                    },
+            try {
+                let product = new Product_1.Product();
+                product.name = dto.name;
+                product.shortDesc = dto.shortDesc;
+                product.longDesc = dto.longDesc;
+                product.price = dto.price;
+                product.discountPrice = dto.discountPrice;
+                product.size = dto.size.toString();
+                const category = await entityManager.findOneBy(Category_1.Category, {
+                    categoryId: dto.categoryId,
+                });
+                if (!category) {
+                    throw Error(category_constant_1.CATEGORY_ERROR_NOT_FOUND);
                 }
-            });
-            return product;
+                product.category = category;
+                product = await entityManager.save(Product_1.Product, product);
+                product.sku = `P${(0, utils_1.generateIndentityCode)(product.productId)}`;
+                product = await entityManager.save(Product_1.Product, product);
+                product = await entityManager.findOne(Product_1.Product, {
+                    where: {
+                        productId: product.productId,
+                    },
+                    relations: {
+                        productImages: {
+                            file: true,
+                        },
+                        category: {
+                            thumbnailFile: true,
+                        },
+                    },
+                });
+                return product;
+            }
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw Error(product_constant_1.PRODUCT_ERROR_DUPLICATE);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
     async update(sku, dto) {
         return await this.productRepo.manager.transaction(async (entityManager) => {
-            let product = await entityManager.findOne(Product_1.Product, {
-                where: {
-                    sku,
-                    active: true,
-                },
-            });
-            if (!product) {
-                throw Error(product_constant_1.PRODUCT_ERROR_NOT_FOUND);
+            try {
+                let product = await entityManager.findOne(Product_1.Product, {
+                    where: {
+                        sku,
+                        active: true,
+                    },
+                });
+                if (!product) {
+                    throw Error(product_constant_1.PRODUCT_ERROR_NOT_FOUND);
+                }
+                product.name = dto.name;
+                product.shortDesc = dto.shortDesc;
+                product.longDesc = dto.longDesc;
+                product.price = dto.price;
+                product.discountPrice = dto.discountPrice;
+                product.size = dto.size.toString();
+                const category = await entityManager.findOneBy(Category_1.Category, {
+                    categoryId: dto.categoryId,
+                });
+                product.category = category;
+                product = await entityManager.save(Product_1.Product, product);
+                product = await entityManager.findOne(Product_1.Product, {
+                    where: {
+                        productId: product.productId,
+                    },
+                    relations: {
+                        productImages: {
+                            file: true,
+                        },
+                        category: {
+                            thumbnailFile: true,
+                        },
+                    },
+                });
+                return product;
             }
-            product.name = dto.name;
-            product.shortDesc = dto.shortDesc;
-            product.longDesc = dto.longDesc;
-            product.price = dto.price;
-            product.discountPrice = dto.discountPrice;
-            product.size = dto.size;
-            const category = await entityManager.findOneBy(Category_1.Category, {
-                categoryId: dto.categoryId,
-            });
-            product.category = category;
-            product = await entityManager.save(Product_1.Product, product);
-            product = await entityManager.findOne(Product_1.Product, {
-                where: {
-                    productId: product.productId,
-                },
-                relations: {
-                    productImages: {
-                        file: true,
-                    },
-                    category: {
-                        thumbnailFile: true
-                    },
-                },
-            });
-            return product;
+            catch (ex) {
+                if (ex.message.includes("duplicate")) {
+                    throw Error(product_constant_1.PRODUCT_ERROR_DUPLICATE);
+                }
+                else {
+                    throw ex;
+                }
+            }
         });
     }
     async delete(sku) {

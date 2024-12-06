@@ -72,6 +72,8 @@ __decorate([
     __metadata("design:type", Array)
 ], Product.prototype, "productImages", void 0);
 Product = __decorate([
+    (0, typeorm_1.Index)("Product_Name_Active_idx", ["active", "name"], { unique: true }),
+    (0, typeorm_1.Index)("Product_SKU_Active_idx", ["active", "sku"], { unique: true }),
     (0, typeorm_1.Index)("Product_pkey", ["productId"], { unique: true }),
     (0, typeorm_1.Entity)("Product", { schema: "dbo" })
 ], Product);

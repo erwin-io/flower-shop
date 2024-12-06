@@ -6,11 +6,11 @@ import { ProductCollectionService } from "src/services/product-collection.servic
 export declare class ProductCollectionController {
     private readonly collectionService;
     constructor(collectionService: ProductCollectionService);
-    getDetails(productCollectionId: string): Promise<ApiResponseModel<ProductCollection>>;
-    getPaginated(params: PaginationParamsDto): Promise<ApiResponseModel<{
+    getById(productCollectionId: string): Promise<ApiResponseModel<ProductCollection>>;
+    getPagination(params: PaginationParamsDto): Promise<ApiResponseModel<{
         results: ProductCollection[];
         total: number;
     }>>;
-    addProduct(accessDto: CreateProductCollectionDto): Promise<ApiResponseModel<ProductCollection>>;
+    create(accessDto: CreateProductCollectionDto): Promise<ApiResponseModel<ProductCollection>>;
     delete(collectionId: string): Promise<ApiResponseModel<ProductCollection>>;
 }

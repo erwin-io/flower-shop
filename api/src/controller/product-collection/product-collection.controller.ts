@@ -26,7 +26,7 @@ export class ProductCollectionController {
 
   @Get("/:productCollectionId")
   //   @UseGuards(JwtAuthGuard)
-  async getDetails(@Param("productCollectionId") productCollectionId: string) {
+  async getById(@Param("productCollectionId") productCollectionId: string) {
     const res = {} as ApiResponseModel<ProductCollection>;
     try {
       res.data = await this.collectionService.getById(productCollectionId);
@@ -41,7 +41,7 @@ export class ProductCollectionController {
 
   @Post("/page")
   //   @UseGuards(JwtAuthGuard)
-  async getPaginated(@Body() params: PaginationParamsDto) {
+  async getPagination(@Body() params: PaginationParamsDto) {
     const res: ApiResponseModel<{
       results: ProductCollection[];
       total: number;
@@ -57,9 +57,9 @@ export class ProductCollectionController {
     }
   }
 
-  @Post("addProduct")
+  @Post("")
   //   @UseGuards(JwtAuthGuard)
-  async addProduct(@Body() accessDto: CreateProductCollectionDto) {
+  async create(@Body() accessDto: CreateProductCollectionDto) {
     const res: ApiResponseModel<ProductCollection> = {} as any;
     try {
       res.data = await this.collectionService.create(accessDto);

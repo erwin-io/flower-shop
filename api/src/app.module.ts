@@ -15,6 +15,7 @@ import { CollectionModule } from "./controller/collection/collection.module";
 import { ProductModule } from "./controller/product/product.module";
 import { ProductCollection } from "./db/entities/ProductCollection";
 import { ProductImageModule } from "./controller/product-image/product-image.module";
+import { ProductCollectionModule } from "./controller/product-collection/product-collection.module";
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
 @Module({
@@ -36,7 +37,8 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     CollectionModule,
     ProductModule,
     ProductCollection,
-    ProductImageModule
+    ProductImageModule,
+    ProductCollectionModule
   ],
   providers: [AppService],
   controllers: [],
